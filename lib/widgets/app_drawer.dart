@@ -25,6 +25,13 @@ class AppDrawer extends StatelessWidget {
             },
           ),
           ListTile(
+            title: const Text('Categories'),
+            onTap: () {
+              context.go('/categories');
+              Navigator.pop(context);
+            },
+          ),
+          ListTile(
             title: const Text('Stats'),
             onTap: () {
               context.go('/stats');

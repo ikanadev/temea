@@ -1,5 +1,6 @@
 import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
+import 'package:temea/screens/category/category.dart';
 import 'package:temea/widgets/app_shell.dart';
 import 'package:temea/screens/stats/stats.dart';
 import 'package:temea/screens/activities/activities.dart';
@@ -21,6 +22,10 @@ final router = GoRouter(
         GoRoute(
           path: '/activities',
           builder: (context, state) => const ActivitiesScreen(),
+        ),
+        GoRoute(
+          path: '/categories',
+          builder: (context, state) => const CategoryScreen(),
         ),
         GoRoute(
           path: '/stats',
