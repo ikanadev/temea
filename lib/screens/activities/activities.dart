@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:temea/widgets/app_drawer.dart';
-import 'package:temea/widgets/heading.dart';
+import 'package:temea/widgets/widgets.dart';
 
 class ActivitiesScreen extends StatelessWidget {
   const ActivitiesScreen({super.key});

@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:temea/providers/category/category.dart';
 import 'package:temea/utils/constants.dart';
-import 'package:temea/widgets/app_drawer.dart';
-import 'package:temea/widgets/heading.dart';
+import 'package:temea/widgets/widgets.dart';
 
 class CategoryScreen extends ConsumerStatefulWidget {
   const CategoryScreen({super.key});
