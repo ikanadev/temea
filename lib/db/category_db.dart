@@ -4,12 +4,20 @@ import 'package:temea/utils/constants.dart';
 
 part 'category_db.g.dart';
 
-@collection
+@Collection(accessor: "category")
+@Name("category")
 class CategoryDb {
+  @Index(unique: true)
   late String id;
+
   Id get isarId => fastHash(id);
+
   late String name;
 
   @enumerated
   late CategoryColor color;
+
+  late DateTime createdAt;
+
+  DateTime? deletedAt;
 }

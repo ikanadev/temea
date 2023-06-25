@@ -57,6 +57,7 @@ class _CategoryScreenState extends ConsumerState<CategoryScreen> {
                     Row(
                       children: [
                         Expanded(child: Text(cat.name)),
+                        Text("${cat.createdAt.millisecond}"),
                         FilledButton(
                           onPressed: () {
                             ref

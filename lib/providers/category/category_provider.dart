@@ -18,9 +18,14 @@ class CategoryNotifier extends AsyncNotifier<List<Category>>
   @override
   Future<List<Category>> getCategories() async {
     final isar = ref.watch(isarProvider).value;
-    final categories = await isar?.categoryDbs.where().findAll() ?? [];
+    final categories = await isar?.category.where().findAll() ?? [];
     return categories
-        .map((cat) => Category(id: cat.id, name: cat.name, color: cat.color))
+        .map((cat) => Category(
+              id: cat.id,
+              name: cat.name,
+              color: cat.color,
+              createdAt: cat.createdAt,
+            ))
         .toList();
   }
 
@@ -30,12 +35,18 @@ class CategoryNotifier extends AsyncNotifier<List<Category>>
     state = await AsyncValue.guard(() async {
       final isar = ref.watch(isarProvider).value;
       final uuid = ref.watch(uuidProvider);
-      final cat = Category(id: uuid.v4(), name: name, color: color);
+      final cat = Category(
+        id: uuid.v4(),
+        name: name,
+        color: color,
+        createdAt: DateTime.now(),
+      );
       await isar?.writeTxn(() async {
-        await isar.categoryDbs.put(CategoryDb()
+        await isar.category.put(CategoryDb()
           ..id = cat.id
           ..name = cat.name
-          ..color = cat.color);
+          ..color = cat.color
+          ..createdAt = cat.createdAt);
       });
       return getCategories();
     });
@@ -48,7 +59,7 @@ class CategoryNotifier extends AsyncNotifier<List<Category>>
     state = await AsyncValue.guard(() async {
       final isar = ref.watch(isarProvider).value;
       await isar?.writeTxn(() async {
-        await isar.categoryDbs.filter().idEqualTo(uuid).deleteAll();
+        await isar.category.filter().idEqualTo(uuid).deleteAll();
       });
       return getCategories();
     });
