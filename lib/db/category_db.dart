@@ -1,6 +1,5 @@
 import 'package:isar/isar.dart';
-import 'package:temea/utils/fast_hash.dart';
-import 'package:temea/utils/constants.dart';
+import 'package:temea/utils/utils.dart';
 
 part 'category_db.g.dart';
 
