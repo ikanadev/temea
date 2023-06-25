@@ -3,8 +3,8 @@ import 'dart:async';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:isar/isar.dart';
 import 'package:temea/db/db.dart';
-import 'package:temea/store/isar/isar.dart';
-import 'package:temea/store/uuid/uuid.dart';
+import 'package:temea/providers/isar/isar.dart';
+import 'package:temea/providers/uuid/uuid.dart';
 import 'package:temea/utils/constants.dart';
 import 'package:temea/models/models.dart';
 
@@ -36,6 +36,19 @@ class CategoryNotifier extends AsyncNotifier<List<Category>>
           ..id = cat.id
           ..name = cat.name
           ..color = cat.color);
+      });
+      return getCategories();
+    });
+  }
+
+  // TODO: handle side effects (delete all activities?, show popup?)
+  @override
+  Future<void> deleteCategory(String uuid) async {
+    state = const AsyncValue.loading();
+    state = await AsyncValue.guard(() async {
+      final isar = ref.watch(isarProvider).value;
+      await isar?.writeTxn(() async {
+        await isar.categoryDbs.filter().idEqualTo(uuid).deleteAll();
       });
       return getCategories();
     });
