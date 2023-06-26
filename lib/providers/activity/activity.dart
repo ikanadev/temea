@@ -6,15 +6,13 @@ import 'package:temea/db/activity_db.dart';
 import 'package:temea/models/models.dart';
 import 'package:temea/providers/isar/isar.dart';
 
-class ActivityNotifier extends AsyncNotifier<List<Activity>>
-    implements ActivityRepo {
+class ActivityNotifier extends AsyncNotifier<List<Activity>> {
   @override
   FutureOr<List<Activity>> build() {
-    return getActivities();
+    return _getActivities();
   }
 
-  @override
-  Future<List<Activity>> getActivities() async {
+  Future<List<Activity>> _getActivities() async {
     final isar = await ref.watch(isarProvider.future);
     final activities =
         await isar.activity.filter().deletedAtIsNotNull().findAll();

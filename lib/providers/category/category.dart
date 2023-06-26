@@ -8,15 +8,13 @@ import 'package:temea/providers/uuid/uuid.dart';
 import 'package:temea/utils/constants.dart';
 import 'package:temea/models/models.dart';
 
-class CategoryNotifier extends AsyncNotifier<List<Category>>
-    implements CategoryRepo {
+class CategoryNotifier extends AsyncNotifier<List<Category>> {
   @override
   Future<List<Category>> build() {
-    return getCategories();
+    return _getCategories();
   }
 
-  @override
-  Future<List<Category>> getCategories() async {
+  Future<List<Category>> _getCategories() async {
     final isar = await ref.watch(isarProvider.future);
     final categories =
         await isar.category.filter().deletedAtIsNotNull().findAll();
@@ -30,7 +28,6 @@ class CategoryNotifier extends AsyncNotifier<List<Category>>
         .toList();
   }
 
-  @override
   Future<void> saveCategory(String name, CategoryColor color) async {
     state = const AsyncValue.loading();
     state = await AsyncValue.guard(() async {
@@ -49,12 +46,11 @@ class CategoryNotifier extends AsyncNotifier<List<Category>>
           ..color = cat.color
           ..createdAt = cat.createdAt);
       });
-      return getCategories();
+      return _getCategories();
     });
   }
 
   // TODO: handle side effects (delete all activities?, show popup?)
-  @override
   Future<void> deleteCategory(String uuid) async {
     state = const AsyncValue.loading();
     state = await AsyncValue.guard(() async {
@@ -62,7 +58,7 @@ class CategoryNotifier extends AsyncNotifier<List<Category>>
       await isar.writeTxn(() async {
         await isar.category.filter().idEqualTo(uuid).deleteAll();
       });
-      return getCategories();
+      return _getCategories();
     });
   }
 }
