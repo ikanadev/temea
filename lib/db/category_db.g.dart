@@ -64,7 +64,14 @@ const CategoryDbSchema = CollectionSchema(
       ],
     )
   },
-  links: {},
+  links: {
+    r'activities': LinkSchema(
+      id: 5265377529749305658,
+      name: r'activities',
+      target: r'activity',
+      single: false,
+    )
+  },
   embeddedSchemas: {},
   getId: _categoryDbGetId,
   getLinks: _categoryDbGetLinks,
@@ -152,10 +159,13 @@ Id _categoryDbGetId(CategoryDb object) {
 }
 
 List<IsarLinkBase<dynamic>> _categoryDbGetLinks(CategoryDb object) {
-  return [];
+  return [object.activities];
 }
 
-void _categoryDbAttach(IsarCollection<dynamic> col, Id id, CategoryDb object) {}
+void _categoryDbAttach(IsarCollection<dynamic> col, Id id, CategoryDb object) {
+  object.activities
+      .attach(col, col.isar.collection<ActivityDb>(), r'activities', id);
+}
 
 extension CategoryDbByIndex on IsarCollection<CategoryDb> {
   Future<CategoryDb?> getById(String id) {
@@ -835,7 +845,68 @@ extension CategoryDbQueryObject
     on QueryBuilder<CategoryDb, CategoryDb, QFilterCondition> {}
 
 extension CategoryDbQueryLinks
-    on QueryBuilder<CategoryDb, CategoryDb, QFilterCondition> {}
+    on QueryBuilder<CategoryDb, CategoryDb, QFilterCondition> {
+  QueryBuilder<CategoryDb, CategoryDb, QAfterFilterCondition> activities(
+      FilterQuery<ActivityDb> q) {
+    return QueryBuilder.apply(this, (query) {
+      return query.link(q, r'activities');
+    });
+  }
+
+  QueryBuilder<CategoryDb, CategoryDb, QAfterFilterCondition>
+      activitiesLengthEqualTo(int length) {
+    return QueryBuilder.apply(this, (query) {
+      return query.linkLength(r'activities', length, true, length, true);
+    });
+  }
+
+  QueryBuilder<CategoryDb, CategoryDb, QAfterFilterCondition>
+      activitiesIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.linkLength(r'activities', 0, true, 0, true);
+    });
+  }
+
+  QueryBuilder<CategoryDb, CategoryDb, QAfterFilterCondition>
+      activitiesIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.linkLength(r'activities', 0, false, 999999, true);
+    });
+  }
+
+  QueryBuilder<CategoryDb, CategoryDb, QAfterFilterCondition>
+      activitiesLengthLessThan(
+    int length, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.linkLength(r'activities', 0, true, length, include);
+    });
+  }
+
+  QueryBuilder<CategoryDb, CategoryDb, QAfterFilterCondition>
+      activitiesLengthGreaterThan(
+    int length, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.linkLength(r'activities', length, include, 999999, true);
+    });
+  }
+
+  QueryBuilder<CategoryDb, CategoryDb, QAfterFilterCondition>
+      activitiesLengthBetween(
+    int lower,
+    int upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.linkLength(
+          r'activities', lower, includeLower, upper, includeUpper);
+    });
+  }
+}
 
 extension CategoryDbQuerySortBy
     on QueryBuilder<CategoryDb, CategoryDb, QSortBy> {

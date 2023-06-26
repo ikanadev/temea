@@ -89,7 +89,14 @@ const ActivityDbSchema = CollectionSchema(
       ],
     )
   },
-  links: {},
+  links: {
+    r'category': LinkSchema(
+      id: -770972376521482031,
+      name: r'category',
+      target: r'category',
+      single: true,
+    )
+  },
   embeddedSchemas: {},
   getId: _activityDbGetId,
   getLinks: _activityDbGetLinks,
@@ -163,10 +170,13 @@ Id _activityDbGetId(ActivityDb object) {
 }
 
 List<IsarLinkBase<dynamic>> _activityDbGetLinks(ActivityDb object) {
-  return [];
+  return [object.category];
 }
 
-void _activityDbAttach(IsarCollection<dynamic> col, Id id, ActivityDb object) {}
+void _activityDbAttach(IsarCollection<dynamic> col, Id id, ActivityDb object) {
+  object.category
+      .attach(col, col.isar.collection<CategoryDb>(), r'category', id);
+}
 
 extension ActivityDbByIndex on IsarCollection<ActivityDb> {
   Future<ActivityDb?> getById(String id) {
@@ -1008,7 +1018,20 @@ extension ActivityDbQueryObject
     on QueryBuilder<ActivityDb, ActivityDb, QFilterCondition> {}
 
 extension ActivityDbQueryLinks
-    on QueryBuilder<ActivityDb, ActivityDb, QFilterCondition> {}
+    on QueryBuilder<ActivityDb, ActivityDb, QFilterCondition> {
+  QueryBuilder<ActivityDb, ActivityDb, QAfterFilterCondition> category(
+      FilterQuery<CategoryDb> q) {
+    return QueryBuilder.apply(this, (query) {
+      return query.link(q, r'category');
+    });
+  }
+
+  QueryBuilder<ActivityDb, ActivityDb, QAfterFilterCondition> categoryIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.linkLength(r'category', 0, true, 0, true);
+    });
+  }
+}
 
 extension ActivityDbQuerySortBy
     on QueryBuilder<ActivityDb, ActivityDb, QSortBy> {

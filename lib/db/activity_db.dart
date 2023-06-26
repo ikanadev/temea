@@ -1,4 +1,5 @@
 import 'package:isar/isar.dart';
+import 'package:temea/db/db.dart';
 import 'package:temea/utils/utils.dart';
 
 part 'activity_db.g.dart';
@@ -20,4 +21,6 @@ class ActivityDb {
   DateTime? startedAt;
 
   DateTime? deletedAt;
+
+  final category = IsarLink<CategoryDb>();
 }
