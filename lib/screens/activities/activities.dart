@@ -90,7 +90,13 @@ class _ActivitiesScreenState extends ConsumerState<ActivitiesScreen> {
           Expanded(
             child: activities.when(
               data: (acts) => ListView(
-                children: acts.map((act) => Text(act.name)).toList(),
+                children: acts
+                    .map(
+                      (act) => Text(
+                        '${act.name} - ${act.category?.name ?? 'No category'}',
+                      ),
+                    )
+                    .toList(),
               ),
               error: (err, _) => Text(err.toString()),
               loading: () => const CircularProgressIndicator(),
