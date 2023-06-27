@@ -66,10 +66,11 @@ const CategoryDbSchema = CollectionSchema(
   },
   links: {
     r'activities': LinkSchema(
-      id: 5265377529749305658,
+      id: 207102109773333751,
       name: r'activities',
       target: r'activity',
       single: false,
+      linkName: r'category',
     )
   },
   embeddedSchemas: {},

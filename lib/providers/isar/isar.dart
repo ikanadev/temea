@@ -5,6 +5,9 @@ import 'package:temea/db/db.dart';
 
 final isarProvider = FutureProvider((ref) async {
   final dir = await getApplicationDocumentsDirectory();
-  final isar = await Isar.open([CategoryDbSchema], directory: dir.path);
+  final isar = await Isar.open(
+    [CategoryDbSchema, ActivityDbSchema],
+    directory: dir.path,
+  );
   return isar;
 });

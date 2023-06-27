@@ -16,8 +16,7 @@ class CategoryNotifier extends AsyncNotifier<List<Category>> {
 
   Future<List<Category>> _getCategories() async {
     final isar = await ref.watch(isarProvider.future);
-    final categories =
-        await isar.category.filter().deletedAtIsNotNull().findAll();
+    final categories = await isar.category.filter().deletedAtIsNull().findAll();
     return categories
         .map((cat) => Category(
               id: cat.id,

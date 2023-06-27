@@ -21,6 +21,6 @@ class CategoryDb {
 
   DateTime? deletedAt;
 
-  // @Backlink(to: 'category')
+  @Backlink(to: 'category')
   final activities = IsarLinks<ActivityDb>();
 }
