@@ -37,6 +37,12 @@ class ThemeNotifier extends AsyncNotifier<ThemeMode> {
     prefs.setString(themeKey, themeModeToStr(ThemeMode.system));
     state = const AsyncValue.data(ThemeMode.system);
   }
+
+  void setThemeMode(ThemeMode mode) async {
+    final SharedPreferences prefs = await ref.watch(prefsProvider.future);
+    prefs.setString(themeKey, themeModeToStr(mode));
+    state = AsyncValue.data(mode);
+  }
 }
 
 final themeProvider = AsyncNotifierProvider<ThemeNotifier, ThemeMode>(

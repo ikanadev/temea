@@ -1,8 +1,5 @@
 import 'package:go_router/go_router.dart';
-import 'package:temea/screens/category/category.dart';
-import 'package:temea/screens/stats/stats.dart';
-import 'package:temea/screens/activities/activities.dart';
-import 'package:temea/screens/home/home.dart';
+import 'package:temea/screens/screens.dart';
 
 final router = GoRouter(
   routes: [
@@ -21,6 +18,10 @@ final router = GoRouter(
     GoRoute(
       path: '/stats',
       builder: (context, state) => const StatsScreen(),
+    ),
+    GoRoute(
+      path: '/settings',
+      builder: (context, state) => const SettingsScreen(),
     ),
   ],
 );
