@@ -7,6 +7,7 @@ class Activity {
     required this.id,
     required this.name,
     required this.createdAt,
+    required this.iconName,
     this.startedAt,
     this.deletedAt,
     this.category,
@@ -14,6 +15,7 @@ class Activity {
 
   final String id;
   final String name;
+  final String iconName;
   final DateTime createdAt;
   final DateTime? startedAt;
   final DateTime? deletedAt;
@@ -21,6 +23,7 @@ class Activity {
 
   Activity copyWith(
     String? name,
+    String? iconName,
     DateTime? startedAt,
     DateTime? createdAt,
     DateTime? deletedAt,
@@ -28,6 +31,7 @@ class Activity {
     return Activity(
       id: id,
       name: name ?? this.name,
+      iconName: iconName ?? this.iconName,
       startedAt: startedAt ?? this.startedAt,
       createdAt: createdAt ?? this.createdAt,
       deletedAt: deletedAt ?? this.deletedAt,

@@ -14,6 +14,7 @@ class ActivityDb {
 
   @Index()
   late String name;
+  late String iconName;
 
   @Index()
   late DateTime createdAt;

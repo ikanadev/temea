@@ -27,18 +27,23 @@ const ActivityDbSchema = CollectionSchema(
       name: r'deletedAt',
       type: IsarType.dateTime,
     ),
-    r'id': PropertySchema(
+    r'iconName': PropertySchema(
       id: 2,
+      name: r'iconName',
+      type: IsarType.string,
+    ),
+    r'id': PropertySchema(
+      id: 3,
       name: r'id',
       type: IsarType.string,
     ),
     r'name': PropertySchema(
-      id: 3,
+      id: 4,
       name: r'name',
       type: IsarType.string,
     ),
     r'startedAt': PropertySchema(
-      id: 4,
+      id: 5,
       name: r'startedAt',
       type: IsarType.dateTime,
     )
@@ -110,6 +115,7 @@ int _activityDbEstimateSize(
   Map<Type, List<int>> allOffsets,
 ) {
   var bytesCount = offsets.last;
+  bytesCount += 3 + object.iconName.length * 3;
   bytesCount += 3 + object.id.length * 3;
   bytesCount += 3 + object.name.length * 3;
   return bytesCount;
@@ -123,9 +129,10 @@ void _activityDbSerialize(
 ) {
   writer.writeDateTime(offsets[0], object.createdAt);
   writer.writeDateTime(offsets[1], object.deletedAt);
-  writer.writeString(offsets[2], object.id);
-  writer.writeString(offsets[3], object.name);
-  writer.writeDateTime(offsets[4], object.startedAt);
+  writer.writeString(offsets[2], object.iconName);
+  writer.writeString(offsets[3], object.id);
+  writer.writeString(offsets[4], object.name);
+  writer.writeDateTime(offsets[5], object.startedAt);
 }
 
 ActivityDb _activityDbDeserialize(
@@ -137,9 +144,10 @@ ActivityDb _activityDbDeserialize(
   final object = ActivityDb();
   object.createdAt = reader.readDateTime(offsets[0]);
   object.deletedAt = reader.readDateTimeOrNull(offsets[1]);
-  object.id = reader.readString(offsets[2]);
-  object.name = reader.readString(offsets[3]);
-  object.startedAt = reader.readDateTimeOrNull(offsets[4]);
+  object.iconName = reader.readString(offsets[2]);
+  object.id = reader.readString(offsets[3]);
+  object.name = reader.readString(offsets[4]);
+  object.startedAt = reader.readDateTimeOrNull(offsets[5]);
   return object;
 }
 
@@ -159,6 +167,8 @@ P _activityDbDeserializeProp<P>(
     case 3:
       return (reader.readString(offset)) as P;
     case 4:
+      return (reader.readString(offset)) as P;
+    case 5:
       return (reader.readDateTimeOrNull(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -628,6 +638,140 @@ extension ActivityDbQueryFilter
     });
   }
 
+  QueryBuilder<ActivityDb, ActivityDb, QAfterFilterCondition> iconNameEqualTo(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'iconName',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<ActivityDb, ActivityDb, QAfterFilterCondition>
+      iconNameGreaterThan(
+    String value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'iconName',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<ActivityDb, ActivityDb, QAfterFilterCondition> iconNameLessThan(
+    String value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'iconName',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<ActivityDb, ActivityDb, QAfterFilterCondition> iconNameBetween(
+    String lower,
+    String upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'iconName',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<ActivityDb, ActivityDb, QAfterFilterCondition>
+      iconNameStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'iconName',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<ActivityDb, ActivityDb, QAfterFilterCondition> iconNameEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'iconName',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<ActivityDb, ActivityDb, QAfterFilterCondition> iconNameContains(
+      String value,
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'iconName',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<ActivityDb, ActivityDb, QAfterFilterCondition> iconNameMatches(
+      String pattern,
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'iconName',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<ActivityDb, ActivityDb, QAfterFilterCondition>
+      iconNameIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'iconName',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<ActivityDb, ActivityDb, QAfterFilterCondition>
+      iconNameIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'iconName',
+        value: '',
+      ));
+    });
+  }
+
   QueryBuilder<ActivityDb, ActivityDb, QAfterFilterCondition> idEqualTo(
     String value, {
     bool caseSensitive = true,
@@ -1059,6 +1203,18 @@ extension ActivityDbQuerySortBy
     });
   }
 
+  QueryBuilder<ActivityDb, ActivityDb, QAfterSortBy> sortByIconName() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'iconName', Sort.asc);
+    });
+  }
+
+  QueryBuilder<ActivityDb, ActivityDb, QAfterSortBy> sortByIconNameDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'iconName', Sort.desc);
+    });
+  }
+
   QueryBuilder<ActivityDb, ActivityDb, QAfterSortBy> sortById() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'id', Sort.asc);
@@ -1119,6 +1275,18 @@ extension ActivityDbQuerySortThenBy
   QueryBuilder<ActivityDb, ActivityDb, QAfterSortBy> thenByDeletedAtDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'deletedAt', Sort.desc);
+    });
+  }
+
+  QueryBuilder<ActivityDb, ActivityDb, QAfterSortBy> thenByIconName() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'iconName', Sort.asc);
+    });
+  }
+
+  QueryBuilder<ActivityDb, ActivityDb, QAfterSortBy> thenByIconNameDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'iconName', Sort.desc);
     });
   }
 
@@ -1185,6 +1353,13 @@ extension ActivityDbQueryWhereDistinct
     });
   }
 
+  QueryBuilder<ActivityDb, ActivityDb, QDistinct> distinctByIconName(
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'iconName', caseSensitive: caseSensitive);
+    });
+  }
+
   QueryBuilder<ActivityDb, ActivityDb, QDistinct> distinctById(
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
@@ -1223,6 +1398,12 @@ extension ActivityDbQueryProperty
   QueryBuilder<ActivityDb, DateTime?, QQueryOperations> deletedAtProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'deletedAt');
+    });
+  }
+
+  QueryBuilder<ActivityDb, String, QQueryOperations> iconNameProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'iconName');
     });
   }
 

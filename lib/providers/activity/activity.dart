@@ -21,6 +21,7 @@ class ActivityNotifier extends AsyncNotifier<List<Activity>> {
         .map((act) => Activity(
               id: act.id,
               name: act.name,
+              iconName: '',
               createdAt: act.createdAt,
               startedAt: act.startedAt,
               category: act.category.value != null
