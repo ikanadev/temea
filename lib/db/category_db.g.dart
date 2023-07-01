@@ -113,7 +113,7 @@ CategoryDb _categoryDbDeserialize(
   final object = CategoryDb();
   object.color =
       _CategoryDbcolorValueEnumMap[reader.readByteOrNull(offsets[0])] ??
-          CategoryColor.red;
+          CategoryColor.pink;
   object.createdAt = reader.readDateTime(offsets[1]);
   object.deletedAt = reader.readDateTimeOrNull(offsets[2]);
   object.id = reader.readString(offsets[3]);
@@ -130,7 +130,7 @@ P _categoryDbDeserializeProp<P>(
   switch (propertyId) {
     case 0:
       return (_CategoryDbcolorValueEnumMap[reader.readByteOrNull(offset)] ??
-          CategoryColor.red) as P;
+          CategoryColor.pink) as P;
     case 1:
       return (reader.readDateTime(offset)) as P;
     case 2:
@@ -145,14 +145,44 @@ P _categoryDbDeserializeProp<P>(
 }
 
 const _CategoryDbcolorEnumValueMap = {
-  'red': 0,
-  'yellow': 1,
-  'green': 2,
+  'pink': 0,
+  'orange': 1,
+  'deepOrange': 2,
+  'amber': 3,
+  'yellow': 4,
+  'lime': 5,
+  'lightGreen': 6,
+  'green': 7,
+  'teal': 8,
+  'cyan': 9,
+  'lightBlue': 10,
+  'blue': 11,
+  'indigo': 12,
+  'purple': 13,
+  'deepPurple': 14,
+  'blueGrey': 15,
+  'brown': 16,
+  'grey': 17,
 };
 const _CategoryDbcolorValueEnumMap = {
-  0: CategoryColor.red,
-  1: CategoryColor.yellow,
-  2: CategoryColor.green,
+  0: CategoryColor.pink,
+  1: CategoryColor.orange,
+  2: CategoryColor.deepOrange,
+  3: CategoryColor.amber,
+  4: CategoryColor.yellow,
+  5: CategoryColor.lime,
+  6: CategoryColor.lightGreen,
+  7: CategoryColor.green,
+  8: CategoryColor.teal,
+  9: CategoryColor.cyan,
+  10: CategoryColor.lightBlue,
+  11: CategoryColor.blue,
+  12: CategoryColor.indigo,
+  13: CategoryColor.purple,
+  14: CategoryColor.deepPurple,
+  15: CategoryColor.blueGrey,
+  16: CategoryColor.brown,
+  17: CategoryColor.grey,
 };
 
 Id _categoryDbGetId(CategoryDb object) {

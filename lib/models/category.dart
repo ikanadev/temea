@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:temea/utils/constants.dart';
+import 'package:temea/utils/utils.dart';
 
 @immutable
 class Category {

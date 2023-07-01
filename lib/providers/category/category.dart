@@ -5,7 +5,7 @@ import 'package:isar/isar.dart';
 import 'package:temea/db/db.dart';
 import 'package:temea/providers/isar/isar.dart';
 import 'package:temea/providers/uuid/uuid.dart';
-import 'package:temea/utils/constants.dart';
+import 'package:temea/utils/utils.dart';
 import 'package:temea/models/models.dart';
 
 class CategoryNotifier extends AsyncNotifier<List<Category>> {

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:temea/providers/category/category.dart';
-import 'package:temea/utils/constants.dart';
+// import 'package:temea/utils/constants.dart';
 import 'package:temea/widgets/widgets.dart';
 
 class CategoryScreen extends ConsumerStatefulWidget {
@@ -28,10 +28,16 @@ class _CategoryScreenState extends ConsumerState<CategoryScreen> {
       drawer: const AppDrawer(),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
+          showDialog(
+            context: context,
+            builder: (_) => const NewCategory(),
+          );
+          /*
           ref
               .read(categoryProvider.notifier)
               .saveCategory(nameController.text, CategoryColor.green)
               .then((_) => nameController.clear());
+              */
         },
         child: const Icon(Icons.add),
       ),
