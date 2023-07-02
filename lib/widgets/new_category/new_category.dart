@@ -1,22 +1,41 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:temea/providers/category/category.dart';
 import 'package:temea/utils/utils.dart';
-import 'package:temea/widgets/color_picker.dart';
+import 'package:temea/widgets/widgets.dart';
 
-class NewCategory extends StatefulWidget {
+import 'color_picker.dart';
+
+class NewCategory extends ConsumerStatefulWidget {
   const NewCategory({super.key});
 
   @override
-  State<NewCategory> createState() => _NewCategoryState();
+  NewCategoryState createState() => NewCategoryState();
 }
 
-class _NewCategoryState extends State<NewCategory> {
+class NewCategoryState extends ConsumerState<NewCategory> {
   final _formKey = GlobalKey<FormState>();
   CategoryColor _color = CategoryColor.red;
+  final TextEditingController _textContr = TextEditingController();
 
   void _setColor(CategoryColor newColor) {
     setState(() {
       _color = newColor;
     });
+  }
+
+  void _closeDialog() {
+    Navigator.of(context).pop();
+  }
+
+  void _saveCategory() {
+    if (_formKey.currentState == null || !_formKey.currentState!.validate()) {
+      return;
+    }
+    ref
+        .read(categoryProvider.notifier)
+        .saveCategory(_textContr.text, _color)
+        .whenComplete(_closeDialog);
   }
 
   @override
@@ -27,11 +46,13 @@ class _NewCategoryState extends State<NewCategory> {
         mainAxisSize: MainAxisSize.min,
         children: [
           Text(
-            'Create new category',
+            'Create categories to classify your activities.',
             style: TextStyle(
               fontSize: Theme.of(context).textTheme.bodySmall?.fontSize,
+              fontStyle: FontStyle.italic,
             ),
           ),
+          const SizedBox(height: 25),
           Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
@@ -44,6 +65,7 @@ class _NewCategoryState extends State<NewCategory> {
                   key: _formKey,
                   child: TextFormField(
                     autofocus: true,
+                    controller: _textContr,
                     validator: (value) {
                       if (value == null || value.trim().isEmpty) {
                         return 'Please enter a name';
@@ -81,18 +103,8 @@ class _NewCategoryState extends State<NewCategory> {
         ],
       ),
       actions: [
-        TextButton(
-          onPressed: () => Navigator.of(context).pop(),
-          child: const Text('Close'),
-        ),
-        TextButton(
-          onPressed: () {
-            if (_formKey.currentState!.validate()) {
-              // register category
-            }
-          },
-          child: const Text('Save'),
-        )
+        CancelButton(label: 'Cancel', onClick: _closeDialog),
+        TextButton(onPressed: _saveCategory, child: const Text('Save')),
       ],
     );
   }
