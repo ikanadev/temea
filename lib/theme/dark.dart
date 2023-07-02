@@ -3,6 +3,9 @@ import 'package:temea/theme/theme.dart';
 
 ThemeData darkTheme = ThemeData.dark().copyWith(
   useMaterial3: true,
+  appBarTheme: AppBarTheme(
+    backgroundColor: Colors.grey[850],
+  ),
   extensions: <ThemeExtension>[
     AppTheme.dark,
   ],
