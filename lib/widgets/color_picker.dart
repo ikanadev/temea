@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:temea/theme/theme.dart';
 import 'package:temea/utils/utils.dart';
 
 class ColorPicker extends StatelessWidget {
-  const ColorPicker({
-    super.key,
-    required this.color,
-    required this.onSelect,
-  });
+  const ColorPicker({super.key, required this.color, required this.onSelect});
 
   final CategoryColor color;
   final Function onSelect;
@@ -22,6 +19,7 @@ class ColorPicker extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final appTheme = getAppTheme(context);
     return AlertDialog(
       title: const Text('Pick a color'),
       content: Column(
@@ -55,8 +53,13 @@ class ColorPicker extends StatelessWidget {
       actions: [
         TextButton(
           onPressed: () => _closeDialog(context),
-          child: const Text('Cancel'),
-        )
+          child: Text(
+            'Cancel',
+            style: TextStyle(
+              color: appTheme.greyText,
+            ),
+          ),
+        ),
       ],
     );
   }
