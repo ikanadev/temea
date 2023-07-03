@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:temea/providers/category/category.dart';
+import 'package:temea/theme/theme.dart';
 import 'package:temea/utils/utils.dart';
 import 'package:temea/widgets/widgets.dart';
 
@@ -10,6 +11,7 @@ class CategoryScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final categories = ref.watch(categoryProvider);
+    final appTheme = getAppTheme(context);
     return Scaffold(
       appBar: const Heading(title: 'My Categories'),
       drawer: const AppDrawer(),
@@ -40,14 +42,14 @@ class CategoryScreen extends ConsumerWidget {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     IconButton(
-                      color: Colors.blue.shade400,
+                      color: appTheme.neutralButton,
                       onPressed: () {
                         //
                       },
                       icon: const Icon(Icons.edit),
                     ),
                     IconButton(
-                      color: Colors.red.shade600,
+                      color: appTheme.dangerButton,
                       onPressed: () {
                         /*
                         ref
