@@ -1,85 +1,72 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:temea/providers/category/category.dart';
-// import 'package:temea/utils/constants.dart';
+import 'package:temea/utils/utils.dart';
 import 'package:temea/widgets/widgets.dart';
 
-class CategoryScreen extends ConsumerStatefulWidget {
+class CategoryScreen extends ConsumerWidget {
   const CategoryScreen({super.key});
 
   @override
-  ConsumerState<CategoryScreen> createState() => _CategoryScreenState();
-}
-
-class _CategoryScreenState extends ConsumerState<CategoryScreen> {
-  final nameController = TextEditingController();
-
-  @override
-  void dispose() {
-    nameController.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final categories = ref.watch(categoryProvider);
     return Scaffold(
-      appBar: const Heading(),
+      appBar: const Heading(title: 'My Categories'),
       drawer: const AppDrawer(),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          showDialog(
-            context: context,
-            builder: (_) => const NewCategory(),
-          );
-          /*
-          ref
-              .read(categoryProvider.notifier)
-              .saveCategory(nameController.text, CategoryColor.green)
-              .then((_) => nameController.clear());
-              */
+          showDialog(context: context, builder: (_) => const NewCategory());
         },
         child: const Icon(Icons.add),
       ),
-      body: Column(
-        children: [
-          Row(
-            children: [
-              Expanded(
-                child: TextField(
-                  decoration: const InputDecoration(hintText: 'Nombre'),
-                  controller: nameController,
+      body: categories.when(
+        data: (categories) => ListView(
+          children: [
+            if (categories.isEmpty)
+              const NoDataMessage(
+                message: 'Seems like you don\'t have any categories yet.'
+                    ' Create one with the + button below.',
+              ),
+            for (final cat in categories)
+              ListTile(
+                contentPadding: const EdgeInsets.only(left: 16, right: 8),
+                dense: true,
+                title: Text(
+                  cat.name,
+                  style: TextStyle(
+                      color: getCatColor(color: cat.color, context: context)),
                 ),
-              ),
-            ],
-          ),
-          Expanded(
-            child: categories.when(
-              data: (categories) => ListView(
-                children: [
-                  Text('${categories.length} items'),
-                  for (final cat in categories)
-                    Row(
-                      children: [
-                        Expanded(child: Text(cat.name)),
-                        Text("${cat.createdAt.millisecond}"),
-                        FilledButton(
-                          onPressed: () {
-                            ref
-                                .read(categoryProvider.notifier)
-                                .deleteCategory(cat.id);
-                          },
-                          child: const Text('Delete'),
-                        ),
-                      ],
+                trailing: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    IconButton(
+                      color: Colors.blue.shade400,
+                      onPressed: () {
+                        //
+                      },
+                      icon: const Icon(Icons.edit),
                     ),
-                ],
+                    IconButton(
+                      color: Colors.red.shade600,
+                      onPressed: () {
+                        /*
+                        ref
+                            .read(categoryProvider.notifier)
+                            .deleteCategory(cat.id);
+                            */
+                      },
+                      icon: const Icon(Icons.delete),
+                    ),
+                  ],
+                ),
+                onTap: () {
+                  // ref.read(categoryProvider.notifier).deleteCategory(cat.id);
+                },
               ),
-              error: (err, stack) => Text('Error: $err'),
-              loading: () => const Text('loading...'),
-            ),
-          ),
-        ],
+          ],
+        ),
+        error: (err, stack) => Text('Error: $err'),
+        loading: () => const CircularProgress(text: 'Loading categories...'),
       ),
     );
   }
