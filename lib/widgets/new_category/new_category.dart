@@ -63,9 +63,11 @@ class NewCategoryState extends ConsumerState<NewCategory> {
               Expanded(
                 child: Form(
                   key: _formKey,
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
                   child: TextFormField(
                     autofocus: true,
                     controller: _textContr,
+                    maxLength: 24,
                     validator: (value) {
                       if (value == null || value.trim().isEmpty) {
                         return 'Please enter a name';
