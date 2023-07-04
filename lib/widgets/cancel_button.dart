@@ -5,7 +5,7 @@ class CancelButton extends StatelessWidget {
   const CancelButton({super.key, required this.label, required this.onClick});
 
   final String label;
-  final VoidCallback onClick;
+  final Function()? onClick;
 
   @override
   Widget build(BuildContext context) {
