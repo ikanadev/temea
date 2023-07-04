@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:temea/providers/category/category.dart';
+import 'package:temea/screens/category/delete_category_dialog.dart';
 import 'package:temea/theme/theme.dart';
 import 'package:temea/utils/utils.dart';
 import 'package:temea/widgets/widgets.dart';
@@ -32,11 +33,13 @@ class CategoryScreen extends ConsumerWidget {
             for (final cat in categories)
               ListTile(
                 contentPadding: const EdgeInsets.only(left: 16, right: 8),
-                dense: true,
+                leading: Icon(
+                  Icons.square_rounded,
+                  size: 35,
+                  color: getCatColor(color: cat.color, context: context),
+                ),
                 title: Text(
                   cat.name,
-                  style: TextStyle(
-                      color: getCatColor(color: cat.color, context: context)),
                 ),
                 trailing: Row(
                   mainAxisSize: MainAxisSize.min,
@@ -51,11 +54,10 @@ class CategoryScreen extends ConsumerWidget {
                     IconButton(
                       color: appTheme.dangerButton,
                       onPressed: () {
-                        /*
-                        ref
-                            .read(categoryProvider.notifier)
-                            .deleteCategory(cat.id);
-                            */
+                        showDialog(
+                          context: context,
+                          builder: (_) => DeleteCategoryDialog(category: cat),
+                        );
                       },
                       icon: const Icon(Icons.delete),
                     ),
@@ -65,6 +67,7 @@ class CategoryScreen extends ConsumerWidget {
                   // ref.read(categoryProvider.notifier).deleteCategory(cat.id);
                 },
               ),
+            const SizedBox(height: 80),
           ],
         ),
         error: (err, stack) => Text('Error: $err'),
