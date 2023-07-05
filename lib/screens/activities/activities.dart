@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:temea/models/models.dart';
 import 'package:temea/providers/activity/activity.dart';
 import 'package:temea/providers/category/category.dart';
+import 'package:temea/providers/uuid/uuid.dart';
 import 'package:temea/screens/activities/select_category_prov.dart';
 import 'package:temea/widgets/widgets.dart';
 
@@ -29,11 +30,17 @@ class _ActivitiesScreenState extends ConsumerState<ActivitiesScreen> {
         onPressed: () async {
           if (selectedCat.value != null) {
             print(selectedCat.value?.name);
+            final uuidBuilder = ref.read(uuidProvider);
             ref
                 .read(activityProvider.notifier)
                 .saveActivity(
-                  nameController.text,
-                  selectedCat.value!,
+                  act: Activity(
+                    id: uuidBuilder.v4(),
+                    name: nameController.text,
+                    createdAt: DateTime.now(),
+                    iconName: '',
+                  ),
+                  categoryId: selectedCat.value!.id,
                 )
                 .then((value) {
               print('saved');

@@ -6,7 +6,6 @@ import 'package:temea/db/activity_db.dart';
 import 'package:temea/db/category_db.dart';
 import 'package:temea/models/models.dart';
 import 'package:temea/providers/isar/isar.dart';
-import 'package:temea/providers/uuid/uuid.dart';
 
 class ActivityNotifier extends AsyncNotifier<List<Activity>> {
   @override
@@ -36,22 +35,26 @@ class ActivityNotifier extends AsyncNotifier<List<Activity>> {
         .toList();
   }
 
-  Future<void> saveActivity(String name, Category cat) async {
+  Future<void> saveActivity({
+    required Activity act,
+    required String categoryId,
+  }) async {
     state = const AsyncValue.loading();
     state = await AsyncValue.guard(() async {
       final isar = await ref.watch(isarProvider.future);
-      final uuid = ref.watch(uuidProvider);
-      final act = ActivityDb()
-        ..id = uuid.v4()
-        ..name = name
-        ..createdAt = DateTime.now();
-      final catDb = await isar.category.getById(cat.id);
-      if (catDb == null) {
-        throw Exception('category with id: ${cat.id} does not exists');
-      }
-      catDb.activities.add(act);
       await isar.writeTxn(() async {
-        await isar.activity.put(act);
+        final catDb = await isar.category.getById(categoryId);
+        if (catDb == null) {
+          throw Exception('category with id: $categoryId does not exists');
+        }
+        final actDb = ActivityDb(
+          id: act.id,
+          name: act.name,
+          iconName: act.iconName,
+          createdAt: DateTime.now(),
+        );
+        await isar.activity.put(actDb);
+        catDb.activities.add(actDb);
         await catDb.activities.save();
       });
       return _getActivities();

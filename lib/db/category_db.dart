@@ -15,7 +15,7 @@ class CategoryDb {
   });
 
   @Index(unique: true)
-  String id;
+  final String id;
 
   Id get isarId => fastHash(id);
 

@@ -7,17 +7,24 @@ part 'activity_db.g.dart';
 @Collection(accessor: "activity")
 @Name("activity")
 class ActivityDb {
+  ActivityDb({
+    required this.id,
+    required this.name,
+    required this.iconName,
+    required this.createdAt,
+  });
+
   @Index(unique: true)
-  late String id;
+  final String id;
 
   Id get isarId => fastHash(id);
 
   @Index()
-  late String name;
-  late String iconName;
+  String name;
+  String iconName;
 
   @Index()
-  late DateTime createdAt;
+  DateTime createdAt;
 
   DateTime? startedAt;
 

@@ -141,12 +141,13 @@ ActivityDb _activityDbDeserialize(
   List<int> offsets,
   Map<Type, List<int>> allOffsets,
 ) {
-  final object = ActivityDb();
-  object.createdAt = reader.readDateTime(offsets[0]);
+  final object = ActivityDb(
+    createdAt: reader.readDateTime(offsets[0]),
+    iconName: reader.readString(offsets[2]),
+    id: reader.readString(offsets[3]),
+    name: reader.readString(offsets[4]),
+  );
   object.deletedAt = reader.readDateTimeOrNull(offsets[1]);
-  object.iconName = reader.readString(offsets[2]);
-  object.id = reader.readString(offsets[3]);
-  object.name = reader.readString(offsets[4]);
   object.startedAt = reader.readDateTimeOrNull(offsets[5]);
   return object;
 }
