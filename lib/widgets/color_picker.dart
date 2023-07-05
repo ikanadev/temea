@@ -2,10 +2,40 @@ import 'package:flutter/material.dart';
 import 'package:temea/utils/utils.dart';
 import 'package:temea/widgets/widgets.dart';
 
+class ColorPickerButton extends StatelessWidget {
+  const ColorPickerButton({
+    super.key,
+    required this.color,
+    required this.onSelect,
+  });
+  final CategoryColor color;
+  final ValueChanged<CategoryColor> onSelect;
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: () {
+        showDialog(
+          context: context,
+          builder: (_) => ColorPicker(color: color, onSelect: onSelect),
+        );
+      },
+      child: Container(
+        width: 38,
+        height: 25,
+        decoration: BoxDecoration(
+          color: getCatColor(color: color, context: context),
+          borderRadius: const BorderRadius.all(Radius.circular(2)),
+        ),
+      ),
+    );
+  }
+}
+
 class ColorPicker extends StatelessWidget {
   const ColorPicker({super.key, required this.color, required this.onSelect});
   final CategoryColor color;
-  final Function onSelect;
+  final ValueChanged<CategoryColor> onSelect;
 
   void _closeDialog(BuildContext context) {
     Navigator.of(context).pop();

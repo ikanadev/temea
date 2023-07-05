@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:temea/providers/category/category.dart';
 import 'package:temea/screens/category/delete_category_dialog.dart';
+import 'package:temea/screens/category/edit_category.dart';
 import 'package:temea/theme/theme.dart';
 import 'package:temea/utils/utils.dart';
 import 'package:temea/widgets/widgets.dart';
@@ -49,7 +50,10 @@ class CategoryScreen extends ConsumerWidget {
                     IconButton(
                       color: appTheme.neutralButton,
                       onPressed: () {
-                        //
+                        showDialog(
+                          context: context,
+                          builder: (_) => EditCategory(category: cat),
+                        );
                       },
                       icon: const Icon(Icons.edit),
                     ),
@@ -66,7 +70,7 @@ class CategoryScreen extends ConsumerWidget {
                   ],
                 ),
                 onTap: () {
-                  // ref.read(categoryProvider.notifier).deleteCategory(cat.id);
+                  // TODO: go to category stats?
                 },
               ),
             const SizedBox(height: 80),

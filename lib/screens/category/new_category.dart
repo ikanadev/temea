@@ -50,7 +50,7 @@ class NewCategoryState extends ConsumerState<NewCategory> {
               fontStyle: FontStyle.italic,
             ),
           ),
-          const SizedBox(height: 25),
+          const SizedBox(height: 24),
           Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
@@ -66,38 +66,17 @@ class NewCategoryState extends ConsumerState<NewCategory> {
                     autofocus: true,
                     controller: _textContr,
                     maxLength: 24,
-                    validator: (value) {
-                      if (value == null || value.trim().isEmpty) {
-                        return 'Please enter a name';
-                      }
-                      return null;
-                    },
+                    validator: nonEmptyValidator,
                   ),
                 ),
               ),
             ],
           ),
-          const SizedBox(height: 25),
+          const SizedBox(height: 24),
           Row(
             children: [
               const Expanded(child: Text('Color')),
-              InkWell(
-                onTap: () {
-                  showDialog(
-                    context: context,
-                    builder: (_) =>
-                        ColorPicker(color: _color, onSelect: _setColor),
-                  );
-                },
-                child: Container(
-                  width: 38,
-                  height: 25,
-                  decoration: BoxDecoration(
-                    color: getCatColor(color: _color, context: context),
-                    borderRadius: const BorderRadius.all(Radius.circular(2)),
-                  ),
-                ),
-              ),
+              ColorPickerButton(color: _color, onSelect: _setColor),
             ],
           ),
         ],
