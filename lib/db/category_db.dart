@@ -7,17 +7,24 @@ part 'category_db.g.dart';
 @Collection(accessor: 'category')
 @Name('category')
 class CategoryDb {
+  CategoryDb({
+    required this.id,
+    required this.name,
+    required this.color,
+    required this.createdAt,
+  });
+
   @Index(unique: true)
-  late String id;
+  String id;
 
   Id get isarId => fastHash(id);
 
-  late String name;
+  String name;
 
   @enumerated
-  late CategoryColor color;
+  CategoryColor color;
 
-  late DateTime createdAt;
+  DateTime createdAt;
 
   DateTime? deletedAt;
 

@@ -32,7 +32,7 @@ class NewCategoryState extends ConsumerState<NewCategory> {
     }
     ref
         .read(categoryProvider.notifier)
-        .saveCategory(_textContr.text, _color)
+        .saveCategory(color: _color, name: _textContr.text)
         .whenComplete(_closeDialog);
   }
 

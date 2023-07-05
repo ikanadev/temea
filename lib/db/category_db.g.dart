@@ -110,14 +110,14 @@ CategoryDb _categoryDbDeserialize(
   List<int> offsets,
   Map<Type, List<int>> allOffsets,
 ) {
-  final object = CategoryDb();
-  object.color =
-      _CategoryDbcolorValueEnumMap[reader.readByteOrNull(offsets[0])] ??
-          CategoryColor.pink;
-  object.createdAt = reader.readDateTime(offsets[1]);
+  final object = CategoryDb(
+    color: _CategoryDbcolorValueEnumMap[reader.readByteOrNull(offsets[0])] ??
+        CategoryColor.pink,
+    createdAt: reader.readDateTime(offsets[1]),
+    id: reader.readString(offsets[3]),
+    name: reader.readString(offsets[4]),
+  );
   object.deletedAt = reader.readDateTimeOrNull(offsets[2]);
-  object.id = reader.readString(offsets[3]);
-  object.name = reader.readString(offsets[4]);
   return object;
 }
 

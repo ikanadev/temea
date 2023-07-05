@@ -31,23 +31,37 @@ class CategoryNotifier extends AsyncNotifier<List<Category>> {
         .toList();
   }
 
-  Future<void> saveCategory(String name, CategoryColor color) async {
+  Future<void> saveCategory({
+    required String name,
+    required CategoryColor color,
+  }) async {
     state = const AsyncValue.loading();
     state = await AsyncValue.guard(() async {
       final isar = await ref.watch(isarProvider.future);
       final uuid = ref.watch(uuidProvider);
-      final cat = Category(
-        id: uuid.v4(),
-        name: name,
-        color: color,
-        createdAt: DateTime.now(),
-      );
       await isar.writeTxn(() async {
-        await isar.category.put(CategoryDb()
-          ..id = cat.id
-          ..name = cat.name
-          ..color = cat.color
-          ..createdAt = cat.createdAt);
+        await isar.category.put(CategoryDb(
+          id: uuid.v4(),
+          name: name,
+          color: color,
+          createdAt: DateTime.now(),
+        ));
+      });
+      return _getCategories();
+    });
+  }
+
+  Future<void> updateCategory({required Category cat}) async {
+    state = const AsyncValue.loading();
+    state = await AsyncValue.guard(() async {
+      final isar = await ref.watch(isarProvider.future);
+      await isar.writeTxn(() async {
+        await isar.category.putById(CategoryDb(
+          id: cat.id,
+          name: cat.name,
+          color: cat.color,
+          createdAt: cat.createdAt,
+        ));
       });
       return _getCategories();
     });
