@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:temea/providers/category/category.dart';
-import 'package:temea/screens/category/delete_category_dialog.dart';
-import 'package:temea/screens/category/edit_category.dart';
+import 'package:temea/providers/providers.dart';
 import 'package:temea/theme/theme.dart';
 import 'package:temea/utils/utils.dart';
 import 'package:temea/widgets/widgets.dart';
 
 import 'new_category.dart';
+import 'delete_category_dialog.dart';
+import 'edit_category.dart';
 
 class CategoryScreen extends ConsumerWidget {
   const CategoryScreen({super.key});

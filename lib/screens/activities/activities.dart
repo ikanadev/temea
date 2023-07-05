@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:temea/models/models.dart';
-import 'package:temea/providers/activity/activity.dart';
-import 'package:temea/providers/category/category.dart';
-import 'package:temea/providers/uuid/uuid.dart';
+import 'package:temea/providers/providers.dart';
 import 'package:temea/screens/activities/select_category_prov.dart';
 import 'package:temea/widgets/widgets.dart';
 

@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:temea/models/models.dart';
-import 'package:temea/providers/category/category.dart';
+import 'package:temea/providers/providers.dart';
 
 class SelectedCategoryNotifier extends AsyncNotifier<Category> {
   @override

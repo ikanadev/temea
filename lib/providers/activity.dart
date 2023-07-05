@@ -2,11 +2,9 @@ import 'dart:async';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:isar/isar.dart';
-import 'package:temea/db/activity_db.dart';
-import 'package:temea/db/category_db.dart';
+import 'package:temea/db/db.dart';
 import 'package:temea/models/models.dart';
-import 'package:temea/providers/category/category.dart';
-import 'package:temea/providers/isar/isar.dart';
+import 'package:temea/providers/providers.dart';
 
 class ActivityNotifier extends AsyncNotifier<List<Activity>> {
   @override

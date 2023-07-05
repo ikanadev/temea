@@ -3,8 +3,7 @@ import 'dart:async';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:isar/isar.dart';
 import 'package:temea/db/db.dart';
-import 'package:temea/providers/isar/isar.dart';
-import 'package:temea/providers/uuid/uuid.dart';
+import 'package:temea/providers/providers.dart';
 import 'package:temea/utils/utils.dart';
 import 'package:temea/models/models.dart';
 

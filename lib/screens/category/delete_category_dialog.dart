@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:temea/models/models.dart';
-import 'package:temea/providers/category/category.dart';
+import 'package:temea/providers/providers.dart';
 import 'package:temea/widgets/widgets.dart';
 
 class DeleteCategoryDialog extends ConsumerWidget {
