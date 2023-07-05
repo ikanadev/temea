@@ -6,6 +6,8 @@ import 'package:temea/theme/theme.dart';
 import 'package:temea/utils/utils.dart';
 import 'package:temea/widgets/widgets.dart';
 
+import 'new_category.dart';
+
 class CategoryScreen extends ConsumerWidget {
   const CategoryScreen({super.key});
 

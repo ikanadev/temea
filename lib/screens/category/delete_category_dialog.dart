@@ -25,6 +25,9 @@ class DeleteCategoryDialog extends ConsumerWidget {
           onClick: () => ref
               .read(categoryProvider.notifier)
               .deleteCategory(category.id)
+              .onError((error, stackTrace) => {
+                    // TODO: handle error
+                  })
               .whenComplete(() => Navigator.of(context).pop()),
           label: 'Delete',
         ),

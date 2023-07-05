@@ -4,8 +4,6 @@ import 'package:temea/providers/category/category.dart';
 import 'package:temea/utils/utils.dart';
 import 'package:temea/widgets/widgets.dart';
 
-import 'color_picker.dart';
-
 class NewCategory extends ConsumerStatefulWidget {
   const NewCategory({super.key});
 
