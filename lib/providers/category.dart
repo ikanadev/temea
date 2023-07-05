@@ -34,8 +34,7 @@ class CategoryNotifier extends AsyncNotifier<List<Category>> {
     required String name,
     required CategoryColor color,
   }) async {
-    state = const AsyncValue.loading();
-    state = await AsyncValue.guard(() async {
+    try {
       final isar = await ref.watch(isarProvider.future);
       final uuid = ref.watch(uuidProvider);
       await isar.writeTxn(() async {
@@ -46,13 +45,14 @@ class CategoryNotifier extends AsyncNotifier<List<Category>> {
           createdAt: DateTime.now(),
         ));
       });
-      return _getCategories();
-    });
+      ref.invalidateSelf();
+    } catch (error, stack) {
+      state = AsyncValue.error(error, stack);
+    }
   }
 
   Future<void> updateCategory({required Category cat}) async {
-    state = const AsyncValue.loading();
-    state = await AsyncValue.guard(() async {
+    try {
       final isar = await ref.watch(isarProvider.future);
       await isar.writeTxn(() async {
         await isar.category.putById(CategoryDb(
@@ -62,20 +62,25 @@ class CategoryNotifier extends AsyncNotifier<List<Category>> {
           createdAt: cat.createdAt,
         ));
       });
-      return _getCategories();
-    });
+      ref.invalidate(activityProvider);
+      ref.invalidateSelf();
+    } catch (error, stack) {
+      state = AsyncValue.error(error, stack);
+    }
   }
 
   // TODO: handle side effects (delete all activities?, show popup?)
   Future<void> deleteCategory(String uuid) async {
-    state = const AsyncValue.loading();
-    state = await AsyncValue.guard(() async {
+    try {
       final isar = await ref.watch(isarProvider.future);
       await isar.writeTxn(() async {
-        await isar.category.filter().idEqualTo(uuid).deleteAll();
+        await isar.category.deleteById(uuid);
       });
-      return _getCategories();
-    });
+      ref.invalidate(activityProvider);
+      ref.invalidateSelf();
+    } catch (error, stack) {
+      state = AsyncValue.error(error, stack);
+    }
   }
 }
 

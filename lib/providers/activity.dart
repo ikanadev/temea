@@ -9,7 +9,6 @@ import 'package:temea/providers/providers.dart';
 class ActivityNotifier extends AsyncNotifier<List<Activity>> {
   @override
   FutureOr<List<Activity>> build() {
-    ref.watch(categoryProvider);
     return _getActivities();
   }
 

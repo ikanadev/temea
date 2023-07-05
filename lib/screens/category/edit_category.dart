@@ -69,6 +69,7 @@ class EditCategoryState extends ConsumerState<EditCategory> {
                 child: Form(
                   key: _formKey,
                   child: TextFormField(
+                    autofocus: true,
                     controller: _textCont,
                     maxLength: 24,
                     validator: nonEmptyValidator,
