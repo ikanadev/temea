@@ -36,28 +36,53 @@ class ActivityNotifier extends AsyncNotifier<List<Activity>> {
 
   Future<void> saveActivity({
     required Activity act,
-    required String categoryId,
+    required String? categoryId,
   }) async {
-    state = const AsyncValue.loading();
-    state = await AsyncValue.guard(() async {
+    try {
       final isar = await ref.watch(isarProvider.future);
-      await isar.writeTxn(() async {
-        final catDb = await isar.category.getById(categoryId);
-        if (catDb == null) {
-          throw Exception('category with id: $categoryId does not exists');
-        }
+      isar.writeTxn(() async {
         final actDb = ActivityDb(
           id: act.id,
           name: act.name,
           iconName: act.iconName,
-          createdAt: DateTime.now(),
+          createdAt: act.createdAt,
         );
         await isar.activity.put(actDb);
-        catDb.activities.add(actDb);
-        await catDb.activities.save();
+        CategoryDb? catDb;
+        if (categoryId != null) {
+          catDb = await isar.category.getById(categoryId);
+        }
+        actDb.category.value = catDb;
+        await actDb.category.save();
       });
-      return _getActivities();
-    });
+      ref.invalidateSelf();
+    } catch (error, stack) {
+      state = AsyncValue.error(error, stack);
+    }
+  }
+
+  Future<void> updateActivity({required Activity newAct}) async {
+    try {
+      final isar = await ref.watch(isarProvider.future);
+      isar.writeTxn(() async {
+        final actDb = ActivityDb(
+          id: newAct.id,
+          name: newAct.name,
+          iconName: newAct.iconName,
+          createdAt: newAct.createdAt,
+        );
+        await isar.activity.put(actDb);
+        CategoryDb? catDb;
+        if (newAct.category != null) {
+          catDb = await isar.category.getById(newAct.category!.id);
+        }
+        actDb.category.value = catDb;
+        actDb.category.save();
+      });
+      ref.invalidateSelf();
+    } catch (error, stack) {
+      state = AsyncValue.error(error, stack);
+    }
   }
 }
 
