@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-Map<String, IconData> iconMap = {
+const Map<String, IconData> materialIconMap = {
   // 'flip_camera_rounded': Icons.flip_camera_rounded,
   'ten_k_rounded': Icons.ten_k_rounded,
   'ten_mp_rounded': Icons.ten_mp_rounded,
