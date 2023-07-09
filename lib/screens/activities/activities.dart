@@ -1,113 +1,34 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:temea/models/models.dart';
 import 'package:temea/providers/providers.dart';
-import 'package:temea/screens/activities/select_category_prov.dart';
 import 'package:temea/widgets/widgets.dart';
 
-class ActivitiesScreen extends ConsumerStatefulWidget {
+import 'activity_item.dart';
+
+class ActivitiesScreen extends ConsumerWidget {
   const ActivitiesScreen({super.key});
 
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() =>
-      _ActivitiesScreenState();
-}
-
-class _ActivitiesScreenState extends ConsumerState<ActivitiesScreen> {
-  final nameController = TextEditingController();
-
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final activities = ref.watch(activityProvider);
-    final selectedCat = ref.watch(selectedCategoryProvider);
-    final categories = ref.watch(categoryProvider);
     return Scaffold(
-      appBar: const Heading(),
+      appBar: const Heading(title: 'Activities'),
       drawer: const AppDrawer(),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () async {
-          if (selectedCat.value != null) {
-            print(selectedCat.value?.name);
-            final uuidBuilder = ref.read(uuidProvider);
-            ref
-                .read(activityProvider.notifier)
-                .saveActivity(
-                  act: Activity(
-                    id: uuidBuilder.v4(),
-                    name: nameController.text,
-                    createdAt: DateTime.now(),
-                    iconName: '',
-                  ),
-                  categoryId: selectedCat.value!.id,
-                )
-                .then((value) {
-              print('saved');
-            }).catchError((err) {
-              print('Error $err');
-            });
+      body: activities.when(
+        data: (acts) {
+          if (acts.isEmpty) {
+            return const NoDataMessage(
+              message: 'Seems like you don\'t have any activity yet, '
+                  'create one with the + button below.',
+            );
           }
+          return ListView.builder(
+            itemCount: acts.length,
+            itemBuilder: (context, index) => ActivityItem(act: acts[index]),
+          );
         },
-        child: const Icon(Icons.add),
-      ),
-      body: Column(
-        children: [
-          Row(
-            children: [
-              SizedBox(
-                width: 200,
-                child: TextField(
-                  decoration: const InputDecoration(hintText: 'Nombre'),
-                  controller: nameController,
-                ),
-              ),
-              Expanded(
-                child: Row(
-                  children: [
-                    categories.when(
-                      data: (cats) => selectedCat.when(
-                        data: (cat) => DropdownButton<Category>(
-                          value: cat,
-                          items: cats
-                              .map(
-                                (cat) => DropdownMenuItem<Category>(
-                                  value: cat,
-                                  child: Text(cat.name),
-                                ),
-                              )
-                              .toList(),
-                          onChanged: (cat) {
-                            ref
-                                .read(selectedCategoryProvider.notifier)
-                                .setCategory(cat!);
-                          },
-                        ),
-                        error: (_, __) => const Text('Error'),
-                        loading: () => const CircularProgressIndicator(),
-                      ),
-                      error: (_, __) => const Text('Error'),
-                      loading: () => const CircularProgressIndicator(),
-                    )
-                  ],
-                ),
-              ),
-            ],
-          ),
-          Expanded(
-            child: activities.when(
-              data: (acts) => ListView(
-                children: acts
-                    .map(
-                      (act) => Text(
-                        '${act.name} - ${act.category?.name ?? 'No category'}',
-                      ),
-                    )
-                    .toList(),
-              ),
-              error: (err, _) => Text(err.toString()),
-              loading: () => const CircularProgressIndicator(),
-            ),
-          ),
-        ],
+        error: (error, _) => Text(error.toString()),
+        loading: () => const CircularProgress(text: 'Loading activities...'),
       ),
     );
   }
