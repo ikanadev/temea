@@ -6,4 +6,4 @@ export 'cancel_button.dart';
 export 'circular_progress.dart';
 export 'no_data_message.dart';
 export 'danger_text_button.dart';
-export 'activity/new_activity.dart';
+export 'new_activity/new_activity.dart';

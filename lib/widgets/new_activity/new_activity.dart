@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:temea/utils/utils.dart';
-import 'package:temea/widgets/activity/icon_picker.dart';
+import 'package:temea/widgets/new_activity/icon_picker.dart';
 import 'package:temea/widgets/widgets.dart';
 
 class NewActivity extends ConsumerStatefulWidget {
