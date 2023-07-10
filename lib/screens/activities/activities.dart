@@ -14,6 +14,12 @@ class ActivitiesScreen extends ConsumerWidget {
     return Scaffold(
       appBar: const Heading(title: 'Activities'),
       drawer: const AppDrawer(),
+      floatingActionButton: FloatingActionButton(
+        child: const Icon(Icons.add),
+        onPressed: () {
+          showDialog(context: context, builder: (_) => const NewActivity());
+        },
+      ),
       body: activities.when(
         data: (acts) {
           if (acts.isEmpty) {
