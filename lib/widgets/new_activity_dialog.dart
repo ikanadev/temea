@@ -75,6 +75,7 @@ class NewActivityDialogState extends ConsumerState<NewActivityDialog> {
               ),
             ],
           ),
+          // TODO: use a SimpleDialog to pick a category.
         ],
       ),
       actions: [
