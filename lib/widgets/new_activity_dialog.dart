@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:temea/utils/utils.dart';
-import 'package:temea/widgets/new_activity/icon_picker.dart';
-import 'package:temea/widgets/widgets.dart';
 
-class NewActivity extends ConsumerStatefulWidget {
-  const NewActivity({super.key});
+import 'cancel_button.dart';
+import 'icon_picker.dart';
+
+class NewActivityDialog extends ConsumerStatefulWidget {
+  const NewActivityDialog({super.key});
 
   @override
-  NewActivityState createState() => NewActivityState();
+  NewActivityDialogState createState() => NewActivityDialogState();
 }
 
-class NewActivityState extends ConsumerState<NewActivity> {
+class NewActivityDialogState extends ConsumerState<NewActivityDialog> {
   final _formKey = GlobalKey<FormState>();
   final _nameCont = TextEditingController();
   String iconName = defaultIconName;
@@ -69,7 +70,7 @@ class NewActivityState extends ConsumerState<NewActivity> {
                     ),
                   );
                 },
-                icon: Icon(getMaterialIconData(iconName)),
+                icon: Icon(getIconData(iconName)),
                 iconSize: 36,
               ),
             ],

@@ -17,7 +17,10 @@ class ActivitiesScreen extends ConsumerWidget {
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.add),
         onPressed: () {
-          showDialog(context: context, builder: (_) => const NewActivity());
+          showDialog(
+            context: context,
+            builder: (_) => const NewActivityDialog(),
+          );
         },
       ),
       body: activities.when(

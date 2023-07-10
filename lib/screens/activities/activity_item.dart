@@ -19,7 +19,7 @@ class ActivityItem extends StatelessWidget {
       title: Text(act.name),
       subtitle: Text(act.category?.name ?? 'No category'),
       leading: Icon(
-        getMaterialIconData(act.iconName),
+        getIconData(act.iconName),
         color: iconColor,
         size: 40,
       ),

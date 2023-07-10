@@ -4,7 +4,9 @@ import 'icons/material.dart';
 
 const defaultIconName = 'square_rounded';
 
-IconData getMaterialIconData(String name) {
+const iconsMap = materialIconMap;
+
+IconData getIconData(String name) {
   if (materialIconMap.containsKey(name)) {
     return materialIconMap[name]!;
   }

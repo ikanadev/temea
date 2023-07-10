@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:temea/utils/icons/material.dart';
 import 'package:temea/utils/utils.dart';
 
 class IconPicker extends StatelessWidget {
@@ -18,7 +17,7 @@ class IconPicker extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final iconNames = materialIconMap.keys;
+    final iconNames = iconsMap.keys;
     return Dialog.fullscreen(
       child: Column(
         children: [
@@ -46,8 +45,7 @@ class IconPicker extends StatelessWidget {
             ),
             itemBuilder: (context, index) {
               final currentIcon = iconNames.elementAt(index);
-              final icon =
-                  Icon(getMaterialIconData(iconNames.elementAt(index)));
+              final icon = Icon(getIconData(iconNames.elementAt(index)));
               if (currentIcon == iconName) {
                 return IconButton.filledTonal(
                   onPressed: null,
