@@ -1,27 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:temea/domain/models/models.dart';
 import 'package:temea/utils/is_dark_mode.dart';
-
-enum CategoryColor {
-  pink,
-  red,
-  orange,
-  deepOrange,
-  amber,
-  yellow,
-  lime,
-  lightGreen,
-  green,
-  teal,
-  cyan,
-  lightBlue,
-  blue,
-  indigo,
-  purple,
-  deepPurple,
-  blueGrey,
-  brown,
-  grey,
-}
 
 final Map<CategoryColor, Color> _lightColorsMap = {
   CategoryColor.pink: Colors.pink,
@@ -66,8 +45,10 @@ final Map<CategoryColor, Color> _darkColorsMap = {
   CategoryColor.grey: Colors.grey.shade400,
 };
 
-Color getCatColor(
-    {required CategoryColor color, required BuildContext context}) {
+Color getCatColor({
+  required CategoryColor color,
+  required BuildContext context,
+}) {
   Color matColor = Colors.grey;
   if (isDarkMode(context)) {
     matColor = _darkColorsMap[color] ?? Colors.grey;

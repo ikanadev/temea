@@ -1,10 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:temea/models/models.dart';
+import 'models.dart';
 
 @immutable
 class Activity {
+  final int uuid;
+  final String name;
+  final String iconName;
+  final DateTime createdAt;
+  final DateTime? startedAt;
+  final DateTime? deletedAt;
+  final Category? category;
+
   const Activity({
-    required this.id,
+    required this.uuid,
     required this.name,
     required this.createdAt,
     required this.iconName,
@@ -13,27 +21,18 @@ class Activity {
     this.category,
   });
 
-  final String id;
-  final String name;
-  final String iconName;
-  final DateTime createdAt;
-  final DateTime? startedAt;
-  final DateTime? deletedAt;
-  final Category? category;
-
   Activity copyWith(
     String? name,
     String? iconName,
     DateTime? startedAt,
-    DateTime? createdAt,
     DateTime? deletedAt,
   ) {
     return Activity(
-      id: id,
+      uuid: uuid,
       name: name ?? this.name,
       iconName: iconName ?? this.iconName,
+      createdAt: createdAt,
       startedAt: startedAt ?? this.startedAt,
-      createdAt: createdAt ?? this.createdAt,
       deletedAt: deletedAt ?? this.deletedAt,
     );
   }

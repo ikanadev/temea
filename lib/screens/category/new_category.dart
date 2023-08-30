@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:temea/domain/models/models.dart';
 import 'package:temea/providers/providers.dart';
 import 'package:temea/utils/utils.dart';
 import 'package:temea/widgets/widgets.dart';
@@ -30,10 +31,8 @@ class NewCategoryState extends ConsumerState<NewCategory> {
     if (_formKey.currentState == null || !_formKey.currentState!.validate()) {
       return;
     }
-    ref
-        .read(categoryProvider.notifier)
-        .saveCategory(color: _color, name: _textContr.text)
-        .whenComplete(_closeDialog);
+    final catRepo = ref.read(categoryRepoProv);
+    catRepo.saveCategory(color: _color, name: _textContr.text);
   }
 
   @override

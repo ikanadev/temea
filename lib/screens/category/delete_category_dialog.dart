@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:temea/models/models.dart';
+import 'package:temea/domain/models/models.dart';
 import 'package:temea/providers/providers.dart';
 import 'package:temea/widgets/widgets.dart';
 
@@ -22,13 +22,10 @@ class DeleteCategoryDialog extends ConsumerWidget {
           onClick: () => Navigator.of(context).pop(),
         ),
         DangerTextButton(
-          onClick: () => ref
-              .read(categoryProvider.notifier)
-              .deleteCategory(category.id)
-              .onError((error, stackTrace) => {
-                    // TODO: handle error
-                  })
-              .whenComplete(() => Navigator.of(context).pop()),
+          onClick: () {
+            ref.read(categoryRepoProv).deleteCategory(category.uuid);
+            Navigator.of(context).pop();
+          },
           label: 'Delete',
         ),
       ],

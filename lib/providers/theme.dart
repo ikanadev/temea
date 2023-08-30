@@ -1,17 +1,14 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:temea/providers/shared_preferences.dart';
 import 'package:temea/utils/utils.dart';
 
 const themeKey = 'theme';
 
-class ThemeNotifier extends AsyncNotifier<ThemeMode> {
+class ThemeNotifier extends Notifier<ThemeMode> {
   @override
-  FutureOr<ThemeMode> build() async {
-    final SharedPreferences prefs = await ref.watch(prefsProvider.future);
+  ThemeMode build() {
+    final prefs = ref.watch(sharedPrefsProvider);
     String? themeStr = prefs.getString(themeKey);
     if (themeStr == null) {
       return ThemeMode.system;
@@ -20,31 +17,31 @@ class ThemeNotifier extends AsyncNotifier<ThemeMode> {
     }
   }
 
-  void setDarkMode() async {
-    final SharedPreferences prefs = await ref.watch(prefsProvider.future);
+  void setDarkMode() {
+    final prefs = ref.watch(sharedPrefsProvider);
     prefs.setString(themeKey, themeModeToStr(ThemeMode.dark));
-    state = const AsyncValue.data(ThemeMode.dark);
+    state = ThemeMode.dark;
   }
 
   void setLightMode() async {
-    final SharedPreferences prefs = await ref.watch(prefsProvider.future);
+    final prefs = ref.watch(sharedPrefsProvider);
     prefs.setString(themeKey, themeModeToStr(ThemeMode.light));
-    state = const AsyncValue.data(ThemeMode.light);
+    state = ThemeMode.light;
   }
 
-  void setSystemMode() async {
-    final SharedPreferences prefs = await ref.watch(prefsProvider.future);
+  void setSystemMode() {
+    final prefs = ref.watch(sharedPrefsProvider);
     prefs.setString(themeKey, themeModeToStr(ThemeMode.system));
-    state = const AsyncValue.data(ThemeMode.system);
+    state = ThemeMode.system;
   }
 
-  void setThemeMode(ThemeMode mode) async {
-    final SharedPreferences prefs = await ref.watch(prefsProvider.future);
+  void setThemeMode(ThemeMode mode) {
+    final prefs = ref.watch(sharedPrefsProvider);
     prefs.setString(themeKey, themeModeToStr(mode));
-    state = AsyncValue.data(mode);
+    state = mode;
   }
 }
 
-final themeProvider = AsyncNotifierProvider<ThemeNotifier, ThemeMode>(
+final themeProvider = NotifierProvider<ThemeNotifier, ThemeMode>(
   () => ThemeNotifier(),
 );

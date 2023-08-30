@@ -19,27 +19,24 @@ class ThemeSwitcher extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final themeProv = ref.watch(themeProvider);
+    final themeMode = ref.watch(themeProvider);
 
-    return themeProv.whenOrNull(
-          data: (theme) => ListTile(
-            title: const Text('Theme'),
-            trailing: DropdownButton<ThemeMode>(
-              value: theme,
-              onChanged: (value) {
-                if (value != null) {
-                  ref.read(themeProvider.notifier).setThemeMode(value);
-                }
-              },
-              items: themeItems
-                  .map((themeItem) => DropdownMenuItem(
-                        value: themeItem.key,
-                        child: Text(themeItem.label),
-                      ))
-                  .toList(),
-            ),
-          ),
-        ) ??
-        const SizedBox();
+    return ListTile(
+      title: const Text('Theme'),
+      trailing: DropdownButton<ThemeMode>(
+        value: themeMode,
+        onChanged: (value) {
+          if (value != null) {
+            ref.read(themeProvider.notifier).setThemeMode(value);
+          }
+        },
+        items: themeItems
+            .map((themeItem) => DropdownMenuItem(
+                  value: themeItem.key,
+                  child: Text(themeItem.label),
+                ))
+            .toList(),
+      ),
+    );
   }
 }

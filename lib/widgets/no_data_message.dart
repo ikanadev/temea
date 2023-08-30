@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:temea/theme/theme.dart';
 
 class NoDataMessage extends StatelessWidget {
-  const NoDataMessage({super.key, required this.message});
+  const NoDataMessage(this.message, {super.key});
   final String message;
 
   @override
