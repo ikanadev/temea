@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:temea/models/models.dart';
+import 'package:temea/domain/models/models.dart';
 import 'package:temea/providers/providers.dart';
 
 import 'category_item.dart';
@@ -13,7 +13,7 @@ int getDeletedIndex({
   if (next.isEmpty) return 0;
   var lastNextIdx = next.length - 1;
   for (var i = 0; i <= lastNextIdx; i++) {
-    if (prev[i].id != next[i].id) return i;
+    if (prev[i].uuid != next[i].uuid) return i;
   }
   // last element of prev was deleted
   return lastNextIdx + 1;
@@ -27,7 +27,7 @@ int getAddedIndex({
   if (prev.isEmpty) return 0;
   var lastPrevIdx = prev.length - 1;
   for (var i = 0; i <= lastPrevIdx; i++) {
-    if (prev[i].id != next[i].id) return i;
+    if (prev[i].uuid != next[i].uuid) return i;
   }
   // element was addet at the end of the list
   return lastPrevIdx + 1;
@@ -47,28 +47,25 @@ class AnimatedCategoryListState extends ConsumerState<AnimatedCategoryList> {
   @override
   Widget build(BuildContext context) {
     ref.listen(
-      categoryProvider,
+      categoriesProv,
       (previous, next) {
         if (previous == null) return;
-        if (!previous.hasValue || !next.hasValue) return;
-        final prevCats = previous.value!;
-        final nextCats = next.value!;
-        if (prevCats.length == nextCats.length) return;
-        if (prevCats.length > nextCats.length) {
+        if (previous.length == next.length) return;
+        if (previous.length > next.length) {
           // Item was deleted
-          var deletedIdx = getDeletedIndex(prev: prevCats, next: nextCats);
+          var deletedIdx = getDeletedIndex(prev: previous, next: next);
           _listKey.currentState!.removeItem(
             deletedIdx,
             (BuildContext context, Animation<double> animation) {
               return SizeTransition(
                 sizeFactor: animation,
-                child: CategoryItem(category: prevCats[deletedIdx]),
+                child: CategoryItem(category: previous[deletedIdx]),
               );
             },
           );
         } else {
           // Item was added
-          var addedIdx = getAddedIndex(prev: prevCats, next: nextCats);
+          var addedIdx = getAddedIndex(prev: previous, next: next);
           _listKey.currentState!.insertItem(addedIdx);
         }
       },

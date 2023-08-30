@@ -41,6 +41,9 @@ dependencies:
   isar_flutter_libs: ^3.1.0+1
   path_provider: ^2.0.15
   shared_preferences: ^2.1.2
+  objectbox: ^2.2.1
+  objectbox_flutter_libs: any
+  flutter_snowflake: ^0.0.4
 
 dev_dependencies:
   flutter_test:
@@ -55,7 +58,8 @@ dev_dependencies:
   custom_lint: ^0.4.0
   riverpod_lint: ^1.3.2
   isar_generator: ^3.1.0+1
-  build_runner: ^2.4.4
+  build_runner: ^2.4.6
+  objectbox_generator: any
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

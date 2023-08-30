@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:temea/models/models.dart';
+import 'package:temea/domain/models/models.dart';
 import 'package:temea/theme/theme.dart';
 import 'package:temea/utils/utils.dart';
 

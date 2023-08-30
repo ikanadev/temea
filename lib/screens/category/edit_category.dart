@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:temea/models/models.dart';
+import 'package:temea/domain/models/models.dart';
 import 'package:temea/providers/providers.dart';
 import 'package:temea/utils/utils.dart';
 import 'package:temea/widgets/widgets.dart';
@@ -41,15 +41,11 @@ class EditCategoryState extends ConsumerState<EditCategory> {
     if (_formKey.currentState == null || !_formKey.currentState!.validate()) {
       return;
     }
-    ref
-        .read(categoryProvider.notifier)
-        .updateCategory(
-          cat: widget.category.copyWith(
-            name: _textCont.text,
-            color: _color,
-          ),
-        )
-        .whenComplete(_closeDialog);
+    final catRepo = ref.read(categoryRepoProv);
+    catRepo.updateCategory(widget.category.copyWith(
+      name: _textCont.text,
+      color: _color,
+    ));
   }
 
   @override

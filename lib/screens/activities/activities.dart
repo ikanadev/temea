@@ -10,7 +10,7 @@ class ActivitiesScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final activities = ref.watch(activityProvider);
+    final acts = ref.watch(activitiesProv);
     return Scaffold(
       appBar: const Heading(title: 'Activities'),
       drawer: const AppDrawer(),
@@ -23,22 +23,15 @@ class ActivitiesScreen extends ConsumerWidget {
           );
         },
       ),
-      body: activities.when(
-        data: (acts) {
-          if (acts.isEmpty) {
-            return const NoDataMessage(
-              message: 'Seems like you don\'t have any activity yet, '
-                  'create one with the + button below.',
-            );
-          }
-          return ListView.builder(
-            itemCount: acts.length,
-            itemBuilder: (context, index) => ActivityItem(act: acts[index]),
-          );
-        },
-        error: (error, _) => Text(error.toString()),
-        loading: () => const CircularProgress(text: 'Loading activities...'),
-      ),
+      body: acts.isEmpty
+          ? const NoDataMessage(
+              'Seems like you don\'t have any activity yet, '
+              'create one with the + button below.',
+            )
+          : ListView.builder(
+              itemCount: acts.length,
+              itemBuilder: (context, index) => ActivityItem(act: acts[index]),
+            ),
     );
   }
 }

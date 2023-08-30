@@ -11,7 +11,7 @@ class CategoryScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final categories = ref.watch(categoryProvider);
+    final cats = ref.watch(categoriesProv);
     return Scaffold(
       appBar: const Heading(title: 'My Categories'),
       drawer: const AppDrawer(),
@@ -21,19 +21,12 @@ class CategoryScreen extends ConsumerWidget {
         },
         child: const Icon(Icons.add),
       ),
-      body: categories.when(
-        data: (data) {
-          if (data.isEmpty) {
-            return const NoDataMessage(
-              message: 'Seems like you don\'t have any categories yet.'
-                  ' Create one with the + button below.',
-            );
-          }
-          return AnimatedCategoryList(categories: data);
-        },
-        error: (err, stack) => Text('Error: $err'),
-        loading: () => const CircularProgress(text: 'Loading categories...'),
-      ),
+      body: cats.isEmpty
+          ? const NoDataMessage(
+              'Seems like you don\'t have any categories yet.'
+              ' Create one with the + button below.',
+            )
+          : AnimatedCategoryList(categories: cats),
     );
   }
 }
