@@ -33,6 +33,8 @@ class NewCategoryState extends ConsumerState<NewCategory> {
     }
     final catRepo = ref.read(categoryRepoProv);
     catRepo.saveCategory(color: _color, name: _textContr.text);
+    ref.invalidate(categoriesProv);
+    _closeDialog();
   }
 
   @override

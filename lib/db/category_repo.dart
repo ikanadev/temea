@@ -1,5 +1,4 @@
 import 'package:flutter_snowflake/flutter_snowflake.dart';
-import 'package:objectbox/objectbox.dart';
 import 'package:temea/db/models/models.dart';
 import 'package:temea/domain/models/models.dart';
 import 'package:temea/domain/repositories.dart';

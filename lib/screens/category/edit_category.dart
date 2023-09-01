@@ -46,6 +46,8 @@ class EditCategoryState extends ConsumerState<EditCategory> {
       name: _textCont.text,
       color: _color,
     ));
+    ref.invalidate(categoriesProv);
+    _closeDialog();
   }
 
   @override

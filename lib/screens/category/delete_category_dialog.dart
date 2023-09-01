@@ -24,6 +24,7 @@ class DeleteCategoryDialog extends ConsumerWidget {
         DangerTextButton(
           onClick: () {
             ref.read(categoryRepoProv).deleteCategory(category.uuid);
+            ref.invalidate(categoriesProv);
             Navigator.of(context).pop();
           },
           label: 'Delete',
