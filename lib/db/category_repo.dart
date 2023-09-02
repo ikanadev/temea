@@ -1,15 +1,18 @@
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_snowflake/flutter_snowflake.dart';
 import 'package:temea/db/models/models.dart';
 import 'package:temea/domain/models/models.dart';
 import 'package:temea/domain/repositories.dart';
 import 'package:temea/objectbox.g.dart';
+import 'package:temea/providers/providers.dart';
 
 class CategoryDbRepository extends CategoryRepository {
   final Store store;
   final Snowflake snowBuilder;
   final Box<CategoryDb> catBox;
+  final ProviderRef<CategoryRepository> ref;
 
-  CategoryDbRepository(this.store, this.snowBuilder)
+  CategoryDbRepository(this.store, this.snowBuilder, this.ref)
       : catBox = store.box<CategoryDb>();
 
   @override
@@ -39,6 +42,7 @@ class CategoryDbRepository extends CategoryRepository {
       createdAt: DateTime.now().millisecondsSinceEpoch,
     );
     catBox.put(cat);
+    ref.invalidate(categoriesProv);
   }
 
   @override
@@ -51,6 +55,7 @@ class CategoryDbRepository extends CategoryRepository {
     cat.color = category.color.name;
     cat.deletedAt = category.deletedAt?.microsecondsSinceEpoch;
     catBox.put(cat);
+    ref.invalidate(categoriesProv);
   }
 
   @override
@@ -61,5 +66,6 @@ class CategoryDbRepository extends CategoryRepository {
     if (cat == null) return;
     cat.deletedAt = DateTime.now().millisecondsSinceEpoch;
     catBox.put(cat);
+    ref.invalidate(categoriesProv);
   }
 }

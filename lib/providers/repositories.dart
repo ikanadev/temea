@@ -8,5 +8,9 @@ final activityRepoProv = Provider<ActivityRepository>((ref) {
 });
 
 final categoryRepoProv = Provider<CategoryRepository>((ref) {
-  return CategoryDbRepository(ref.watch(storeProvider), ref.watch(snowProv));
+  return CategoryDbRepository(
+    ref.watch(storeProvider),
+    ref.watch(snowProv),
+    ref,
+  );
 });

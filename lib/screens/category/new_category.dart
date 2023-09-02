@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:temea/domain/models/models.dart';
 import 'package:temea/providers/providers.dart';
+import 'package:temea/utils/utils.dart';
 import 'package:temea/widgets/widgets.dart';
 
 class NewCategory extends ConsumerStatefulWidget {
@@ -32,20 +33,10 @@ class NewCategoryState extends ConsumerState<NewCategory> {
     }
     final catRepo = ref.read(categoryRepoProv);
     catRepo.saveCategory(color: _color, name: _textContr.text);
-    ref.invalidate(categoriesProv);
     _closeDialog();
   }
 
-  String? _nameValidator(String? value) {
-    if (value == null) return 'Please enter a value';
-    final cleanValue = value.trim().toLowerCase();
-    if (cleanValue.isEmpty) return 'Please enter a value';
-    final cats = ref.read(categoriesProv);
-    if (cats.indexWhere((c) => c.name.toLowerCase() == cleanValue) >= 0) {
-      return '${value.trim()} already exists';
-    }
-    return null;
-  }
+  String? _nameValidator(String? value) => categoryNameValidator(value, ref);
 
   @override
   Widget build(BuildContext context) {

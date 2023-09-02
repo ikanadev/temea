@@ -46,9 +46,10 @@ class EditCategoryState extends ConsumerState<EditCategory> {
       name: _textCont.text,
       color: _color,
     ));
-    ref.invalidate(categoriesProv);
     _closeDialog();
   }
+
+  String? _nameValidator(String? value) => categoryNameValidator(value, ref);
 
   @override
   Widget build(BuildContext context) {
@@ -70,7 +71,7 @@ class EditCategoryState extends ConsumerState<EditCategory> {
                     autofocus: true,
                     controller: _textCont,
                     maxLength: 24,
-                    validator: nonEmptyValidator,
+                    validator: _nameValidator,
                   ),
                 ),
               ),
