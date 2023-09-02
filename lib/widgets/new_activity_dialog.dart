@@ -50,7 +50,7 @@ class NewActivityDialogState extends ConsumerState<NewActivityDialog> {
                     autofocus: true,
                     maxLength: 24,
                     controller: _nameCont,
-                    validator: nonEmptyValidator,
+                    validator: (text) => null,
                   ),
                 ),
               ),

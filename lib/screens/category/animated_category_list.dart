@@ -46,30 +46,27 @@ class AnimatedCategoryListState extends ConsumerState<AnimatedCategoryList> {
 
   @override
   Widget build(BuildContext context) {
-    ref.listen(
-      categoriesProv,
-      (previous, next) {
-        if (previous == null) return;
-        if (previous.length == next.length) return;
-        if (previous.length > next.length) {
-          // Item was deleted
-          var deletedIdx = getDeletedIndex(prev: previous, next: next);
-          _listKey.currentState!.removeItem(
-            deletedIdx,
-            (BuildContext context, Animation<double> animation) {
-              return SizeTransition(
-                sizeFactor: animation,
-                child: CategoryItem(category: previous[deletedIdx]),
-              );
-            },
-          );
-        } else {
-          // Item was added
-          var addedIdx = getAddedIndex(prev: previous, next: next);
-          _listKey.currentState!.insertItem(addedIdx);
-        }
-      },
-    );
+    ref.listen(categoriesProv, (previous, next) {
+      if (previous == null) return;
+      if (previous.length == next.length) return;
+      if (previous.length > next.length) {
+        // Item was deleted
+        var deletedIdx = getDeletedIndex(prev: previous, next: next);
+        _listKey.currentState!.removeItem(
+          deletedIdx,
+          (BuildContext context, Animation<double> animation) {
+            return SizeTransition(
+              sizeFactor: animation,
+              child: CategoryItem(category: previous[deletedIdx]),
+            );
+          },
+        );
+      } else {
+        // Item was added
+        var addedIdx = getAddedIndex(prev: previous, next: next);
+        _listKey.currentState!.insertItem(addedIdx);
+      }
+    });
 
     return AnimatedList(
       key: _listKey,

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:temea/domain/models/models.dart';
-import 'package:temea/theme/theme.dart';
+import 'package:temea/extension/context.dart';
 import 'package:temea/utils/utils.dart';
 
 import 'delete_category_dialog.dart';
@@ -12,22 +12,20 @@ class CategoryItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final appTheme = getAppTheme(context);
     return ListTile(
+      dense: true,
       contentPadding: const EdgeInsets.only(left: 16, right: 8),
       leading: Icon(
         Icons.square_rounded,
-        size: 35,
+        size: 32,
         color: getCatColor(color: category.color, context: context),
       ),
-      title: Text(
-        category.name,
-      ),
+      title: Text(category.name),
       trailing: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
           IconButton(
-            color: appTheme.neutralButton,
+            color: context.appTheme.neutralButton,
             onPressed: () {
               showDialog(
                 context: context,
@@ -37,7 +35,7 @@ class CategoryItem extends StatelessWidget {
             icon: const Icon(Icons.edit),
           ),
           IconButton(
-            color: appTheme.dangerButton,
+            color: context.appTheme.dangerButton,
             onPressed: () {
               showDialog(
                 context: context,
@@ -48,9 +46,6 @@ class CategoryItem extends StatelessWidget {
           ),
         ],
       ),
-      onTap: () {
-        // TODO: go to category stats?
-      },
     );
   }
 }
