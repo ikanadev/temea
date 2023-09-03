@@ -16,6 +16,7 @@ class NewActivityDialog extends ConsumerStatefulWidget {
 
 class NewActivityDialogState extends ConsumerState<NewActivityDialog> {
   final _formKey = GlobalKey<FormState>();
+  final _nameFocusNode = FocusNode();
   String name = '';
   String? _nameError;
   String iconName = defaultIconName;
@@ -69,6 +70,7 @@ class NewActivityDialogState extends ConsumerState<NewActivityDialog> {
                 name = value;
               },
               autofocus: true,
+              focusNode: _nameFocusNode,
               maxLength: 24,
             ),
             const SizedBox(height: 8),
@@ -77,6 +79,7 @@ class NewActivityDialogState extends ConsumerState<NewActivityDialog> {
                 const Expanded(child: Text('Icon')),
                 IconButton.filledTonal(
                   onPressed: () {
+                    _nameFocusNode.unfocus();
                     showDialog(
                       context: context,
                       builder: (_) => IconPicker(
