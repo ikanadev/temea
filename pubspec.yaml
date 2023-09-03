@@ -34,11 +34,8 @@ dependencies:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
-  go_router: ^7.1.1
+  go_router: ^10.1.2
   flutter_riverpod: ^2.3.6
-  uuid: ^3.0.7
-  isar: ^3.1.0+1
-  isar_flutter_libs: ^3.1.0+1
   path_provider: ^2.0.15
   shared_preferences: ^2.1.2
   objectbox: ^2.2.1
@@ -55,9 +52,8 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^2.0.0
-  custom_lint: ^0.4.0
-  riverpod_lint: ^1.3.2
-  isar_generator: ^3.1.0+1
+  custom_lint: ^0.5.3
+  riverpod_lint: ^2.0.3
   build_runner: ^2.4.6
   objectbox_generator: any
 
