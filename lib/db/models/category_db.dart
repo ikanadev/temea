@@ -1,5 +1,6 @@
 import 'package:objectbox/objectbox.dart';
 import 'package:temea/db/models/models.dart';
+import 'package:temea/domain/models/models.dart';
 
 @Entity()
 class CategoryDb {
@@ -20,4 +21,16 @@ class CategoryDb {
     required this.color,
     required this.createdAt,
   });
+
+  Category toCategory() {
+    return Category(
+      uuid: uuid,
+      name: name,
+      color: CategoryColor.values.firstWhere(
+        (col) => col.name == color,
+        orElse: () => CategoryColor.blue,
+      ),
+      createdAt: DateTime.fromMillisecondsSinceEpoch(createdAt),
+    );
+  }
 }

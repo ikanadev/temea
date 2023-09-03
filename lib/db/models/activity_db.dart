@@ -1,5 +1,6 @@
 import 'package:objectbox/objectbox.dart';
 import 'package:temea/db/models/models.dart';
+import 'package:temea/domain/models/models.dart';
 
 @Entity()
 class ActivityDb {
@@ -19,4 +20,14 @@ class ActivityDb {
     required this.iconName,
     required this.createdAt,
   });
+
+  Activity toActivity() {
+    return Activity(
+      uuid: uuid,
+      name: name,
+      createdAt: DateTime.fromMillisecondsSinceEpoch(createdAt),
+      iconName: iconName,
+      category: category.target?.toCategory(),
+    );
+  }
 }

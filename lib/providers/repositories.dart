@@ -4,7 +4,11 @@ import 'package:temea/domain/repositories.dart';
 import 'package:temea/providers/providers.dart';
 
 final activityRepoProv = Provider<ActivityRepository>((ref) {
-  return ActivityDbRepository(ref.watch(storeProvider), ref.watch(snowProv));
+  return ActivityDbRepository(
+    ref.watch(storeProvider),
+    ref.watch(snowProv),
+    ref,
+  );
 });
 
 final categoryRepoProv = Provider<CategoryRepository>((ref) {
