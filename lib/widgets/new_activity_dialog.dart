@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:temea/domain/models/models.dart';
+import 'package:temea/extension/context.dart';
 import 'package:temea/providers/providers.dart';
 import 'package:temea/utils/utils.dart';
 
@@ -76,7 +77,11 @@ class NewActivityDialogState extends ConsumerState<NewActivityDialog> {
             const SizedBox(height: 8),
             Row(
               children: [
-                const Expanded(child: Text('Icon')),
+                Expanded(
+                    child: Text(
+                  'Icon',
+                  style: context.textTheme.labelLarge,
+                )),
                 IconButton.filledTonal(
                   onPressed: () {
                     _nameFocusNode.unfocus();
@@ -88,7 +93,12 @@ class NewActivityDialogState extends ConsumerState<NewActivityDialog> {
                       ),
                     );
                   },
-                  icon: Icon(getIconData(iconName)),
+                  icon: Icon(
+                    getIconData(iconName),
+                    color: cat == null
+                        ? null
+                        : getCatColor(color: cat!.color, context: context),
+                  ),
                   iconSize: 30,
                 ),
               ],
@@ -98,12 +108,22 @@ class NewActivityDialogState extends ConsumerState<NewActivityDialog> {
               items: cats.map((c) {
                 return DropdownMenuItem<Category>(
                   value: c,
-                  child: Text(c.name),
+                  child: Row(
+                    children: [
+                      Icon(
+                        Icons.square_rounded,
+                        size: 20,
+                        color: getCatColor(color: c.color, context: context),
+                      ),
+                      const SizedBox(width: 4),
+                      Text(c.name, style: context.textTheme.labelLarge),
+                    ],
+                  ),
                 );
               }).toList(),
               value: cat,
               hint: const Text('Pick a category'),
-              onChanged: (value) => cat = value,
+              onChanged: (value) => setState(() => cat = value),
             ),
           ],
         ),
