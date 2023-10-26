@@ -4,5 +4,6 @@ import 'package:temea/providers/providers.dart';
 
 final categoriesProv = Provider<List<Category>>((ref) {
   final repo = ref.watch(categoryRepoProv);
-  return repo.getCategories();
+  final catsRes = repo.getCategories();
+  return catsRes.getOrElse((err) => throw Exception(err));
 });

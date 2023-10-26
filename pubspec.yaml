@@ -42,6 +42,7 @@ dependencies:
   objectbox_flutter_libs: any
   flutter_snowflake: ^0.0.4
   riverpod_annotation: ^2.1.4
+  fpdart: ^1.1.0
 
 dev_dependencies:
   flutter_test:
