@@ -1,13 +1,6 @@
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:temea/providers/providers.dart';
-
-String? categoryNameValidator(String? value, WidgetRef ref) {
+String? categoryNameValidator(String? value) {
   if (value == null) return 'Please enter a value';
-  final cleanValue = value.trim().toLowerCase();
+  final cleanValue = value.trim();
   if (cleanValue.isEmpty) return 'Please enter a value';
-  final cats = ref.read(categoriesProv);
-  if (cats.indexWhere((c) => c.name.toLowerCase() == cleanValue) >= 0) {
-    return '${value.trim()} already exists';
-  }
   return null;
 }

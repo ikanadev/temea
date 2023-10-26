@@ -14,10 +14,18 @@ class NewCategory extends ConsumerStatefulWidget {
 
 class NewCategoryState extends ConsumerState<NewCategory> {
   final _formKey = GlobalKey<FormState>();
-  CategoryColor _color = CategoryColor.red;
   final TextEditingController _textContr = TextEditingController();
+  CategoryColor _color = CategoryColor.red;
+  String? _saveError;
+
+  void _clearSaveError() {
+    if (_saveError != null) {
+      setState(() => _saveError = null);
+    }
+  }
 
   void _setColor(CategoryColor newColor) {
+    _clearSaveError();
     setState(() {
       _color = newColor;
     });
@@ -32,14 +40,17 @@ class NewCategoryState extends ConsumerState<NewCategory> {
       return;
     }
     final catRepo = ref.read(categoryRepoProv);
-    catRepo.saveCategory(color: _color, name: _textContr.text);
-    _closeDialog();
+    final res = catRepo.saveCategory(color: _color, name: _textContr.text);
+    res.match(
+      () => _closeDialog(),
+      (err) => setState(() => _saveError = err),
+    );
   }
-
-  String? _nameValidator(String? value) => categoryNameValidator(value, ref);
 
   @override
   Widget build(BuildContext context) {
+    final textTheme = Theme.of(context).textTheme;
+    final theme = Theme.of(context);
     return AlertDialog(
       title: const Text('New category'),
       content: Column(
@@ -47,12 +58,15 @@ class NewCategoryState extends ConsumerState<NewCategory> {
         children: [
           Text(
             'Create categories to classify your activities.',
-            style: TextStyle(
-              fontSize: Theme.of(context).textTheme.bodySmall?.fontSize,
-              fontStyle: FontStyle.italic,
-            ),
+            style: textTheme.bodySmall,
           ),
           const SizedBox(height: 24),
+          if (_saveError != null)
+            Text(
+              _saveError!,
+              style:
+                  textTheme.bodySmall?.copyWith(color: theme.colorScheme.error),
+            ),
           Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
@@ -63,11 +77,13 @@ class NewCategoryState extends ConsumerState<NewCategory> {
               Expanded(
                 child: Form(
                   key: _formKey,
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
                   child: TextFormField(
                     autofocus: true,
                     controller: _textContr,
                     maxLength: 24,
-                    validator: _nameValidator,
+                    validator: categoryNameValidator,
+                    onChanged: (_) => _clearSaveError(),
                   ),
                 ),
               ),

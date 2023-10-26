@@ -43,6 +43,10 @@ class CategoryDbRepository extends CategoryRepository {
   @override
   OptionErr saveCategory({required CategoryColor color, required String name}) {
     try {
+      final query = catBox.query(CategoryDb_.name.equals(name)).build();
+      final count = query.count();
+      query.close();
+      if (count > 0) return some("Category with that name already exists.");
       final cat = CategoryDb(
         uuid: snowBuilder.getId(),
         name: name,

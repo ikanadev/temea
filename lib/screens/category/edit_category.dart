@@ -49,8 +49,6 @@ class EditCategoryState extends ConsumerState<EditCategory> {
     _closeDialog();
   }
 
-  String? _nameValidator(String? value) => categoryNameValidator(value, ref);
-
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
@@ -71,7 +69,7 @@ class EditCategoryState extends ConsumerState<EditCategory> {
                     autofocus: true,
                     controller: _textCont,
                     maxLength: 24,
-                    validator: _nameValidator,
+                    validator: categoryNameValidator,
                   ),
                 ),
               ),
