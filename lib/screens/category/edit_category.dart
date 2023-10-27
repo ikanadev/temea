@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:temea/domain/models/models.dart';
+import 'package:temea/extension/context.dart';
 import 'package:temea/providers/providers.dart';
 import 'package:temea/utils/utils.dart';
 import 'package:temea/widgets/widgets.dart';
@@ -17,8 +18,9 @@ class EditCategory extends ConsumerStatefulWidget {
 
 class EditCategoryState extends ConsumerState<EditCategory> {
   final _formKey = GlobalKey<FormState>();
-  CategoryColor _color = CategoryColor.red;
   final TextEditingController _textCont = TextEditingController();
+  CategoryColor _color = CategoryColor.red;
+  String? _updateErr;
 
   @override
   void initState() {
@@ -27,26 +29,20 @@ class EditCategoryState extends ConsumerState<EditCategory> {
     super.initState();
   }
 
-  void _setColor(CategoryColor color) {
-    setState(() {
-      _color = color;
-    });
-  }
+  void _setColor(CategoryColor color) => setState(() => _color = color);
 
-  void _closeDialog() {
-    Navigator.of(context).pop();
-  }
+  void _closeDialog() => Navigator.of(context).pop();
 
   void _updateCategory() {
     if (_formKey.currentState == null || !_formKey.currentState!.validate()) {
       return;
     }
     final catRepo = ref.read(categoryRepoProv);
-    catRepo.updateCategory(widget.category.copyWith(
+    final res = catRepo.updateCategory(widget.category.copyWith(
       name: _textCont.text,
       color: _color,
     ));
-    _closeDialog();
+    res.match(() => _closeDialog(), (err) => setState(() => _updateErr = err));
   }
 
   @override
@@ -56,6 +52,13 @@ class EditCategoryState extends ConsumerState<EditCategory> {
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
+          if (_updateErr != null)
+            Text(
+              _updateErr!,
+              style: context.textTheme.bodySmall?.copyWith(
+                color: context.colorScheme.error,
+              ),
+            ),
           Row(
             children: [
               Container(
@@ -65,6 +68,7 @@ class EditCategoryState extends ConsumerState<EditCategory> {
               Expanded(
                 child: Form(
                   key: _formKey,
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
                   child: TextFormField(
                     autofocus: true,
                     controller: _textCont,

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:temea/domain/models/models.dart';
+import 'package:temea/extension/context.dart';
 import 'package:temea/providers/providers.dart';
 import 'package:temea/utils/utils.dart';
 import 'package:temea/widgets/widgets.dart';
@@ -49,8 +50,6 @@ class NewCategoryState extends ConsumerState<NewCategory> {
 
   @override
   Widget build(BuildContext context) {
-    final textTheme = Theme.of(context).textTheme;
-    final theme = Theme.of(context);
     return AlertDialog(
       title: const Text('New category'),
       content: Column(
@@ -58,14 +57,15 @@ class NewCategoryState extends ConsumerState<NewCategory> {
         children: [
           Text(
             'Create categories to classify your activities.',
-            style: textTheme.bodySmall,
+            style: context.textTheme.bodySmall,
           ),
           const SizedBox(height: 24),
           if (_saveError != null)
             Text(
               _saveError!,
-              style:
-                  textTheme.bodySmall?.copyWith(color: theme.colorScheme.error),
+              style: context.textTheme.bodySmall?.copyWith(
+                color: context.colorScheme.error,
+              ),
             ),
           Row(
             crossAxisAlignment: CrossAxisAlignment.center,
