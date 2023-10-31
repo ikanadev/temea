@@ -73,7 +73,7 @@ class EditCategoryState extends ConsumerState<EditCategory> {
                     autofocus: true,
                     controller: _textCont,
                     maxLength: 24,
-                    validator: categoryNameValidator,
+                    validator: nonEmptyValidator,
                   ),
                 ),
               ),

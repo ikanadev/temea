@@ -3,3 +3,4 @@ import 'package:temea/domain/models/models.dart';
 
 typedef OptionErr = Option<String>;
 typedef EitherCategories = Either<String, List<Category>>;
+typedef EitherActivities = Either<String, List<Activity>>;

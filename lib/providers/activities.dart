@@ -4,5 +4,6 @@ import 'package:temea/providers/providers.dart';
 
 final activitiesProv = Provider<List<Activity>>((ref) {
   final repo = ref.watch(activityRepoProv);
-  return repo.getActivities();
+  final resp = repo.getActivities();
+  return resp.getOrElse((err) => throw Exception(err));
 });

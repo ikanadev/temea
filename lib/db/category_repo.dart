@@ -23,17 +23,7 @@ class CategoryDbRepository extends CategoryRepository {
       final query = catBox.query(CategoryDb_.deletedAt.isNull()).build();
       final categories = query.find();
       query.close();
-      final resp = categories.map<Category>((cat) {
-        return Category(
-          uuid: cat.uuid,
-          name: cat.name,
-          color: CategoryColor.values.firstWhere(
-            (col) => col.name == cat.color,
-            orElse: () => CategoryColor.blue,
-          ),
-          createdAt: DateTime.fromMillisecondsSinceEpoch(cat.createdAt),
-        );
-      }).toList();
+      final resp = categories.map<Category>((cat) => cat.toCategory()).toList();
       return right(resp);
     } catch (e) {
       return left(e.toString());
@@ -43,7 +33,9 @@ class CategoryDbRepository extends CategoryRepository {
   @override
   OptionErr saveCategory({required CategoryColor color, required String name}) {
     try {
-      final query = catBox.query(CategoryDb_.name.equals(name)).build();
+      final query = catBox
+          .query(CategoryDb_.name.equals(name, caseSensitive: false))
+          .build();
       final count = query.count();
       query.close();
       if (count > 0) return some("Category with that name already exists.");

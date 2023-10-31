@@ -82,7 +82,7 @@ class NewCategoryState extends ConsumerState<NewCategory> {
                     autofocus: true,
                     controller: _textContr,
                     maxLength: 24,
-                    validator: categoryNameValidator,
+                    validator: nonEmptyValidator,
                     onChanged: (_) => _clearSaveError(),
                   ),
                 ),

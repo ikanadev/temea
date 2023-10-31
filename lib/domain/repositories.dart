@@ -9,8 +9,8 @@ abstract class CategoryRepository {
 }
 
 abstract class ActivityRepository {
-  List<Activity> getActivities();
-  void saveActivity({
+  EitherActivities getActivities();
+  OptionErr saveActivity({
     required String name,
     required String iconName,
     Category? category,
