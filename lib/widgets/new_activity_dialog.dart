@@ -19,33 +19,31 @@ class NewActivityDialogState extends ConsumerState<NewActivityDialog> {
   final _formKey = GlobalKey<FormState>();
   final _nameFocusNode = FocusNode();
   String name = '';
-  String? _nameError;
   String iconName = defaultIconName;
   Category? cat;
+  String? _saveError;
 
   void _setIconName(String name) => setState(() => iconName = name);
 
   void _closeDialog() => Navigator.of(context).pop();
 
+  void _clearSaveError() {
+    if (_saveError != null) setState(() => _saveError = null);
+  }
+
   void _saveActivity() {
     if (_formKey.currentState == null || !_formKey.currentState!.validate()) {
       return;
     }
-    try {
-      ref.read(activityRepoProv).saveActivity(
-            name: name,
-            iconName: iconName,
-            category: cat,
-          );
-      Navigator.of(context).pop();
-    } catch (e) {
-      if (e is AppException && e.err == AppError.alreadyExists) {
-        setState(() => _nameError = e.msg);
-        _formKey.currentState?.validate();
-      } else {
-        rethrow;
-      }
-    }
+    final res = ref.read(activityRepoProv).saveActivity(
+          name: name,
+          iconName: iconName,
+          category: cat,
+        );
+    res.match(
+      () => _closeDialog(),
+      (err) => setState(() => _saveError = err),
+    );
   }
 
   @override
@@ -58,18 +56,16 @@ class NewActivityDialogState extends ConsumerState<NewActivityDialog> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
+            if (_saveError != null)
+              Text(
+                _saveError!,
+                style: context.textTheme.bodySmall
+                    ?.copyWith(color: context.colorScheme.error),
+              ),
             TextFormField(
               decoration: const InputDecoration(labelText: 'Name'),
-              validator: (value) {
-                if (value == null || value.trim().isEmpty) {
-                  return 'Please provide a name';
-                }
-                return _nameError;
-              },
-              onChanged: (value) {
-                if (_nameError != null) setState(() => _nameError = null);
-                name = value;
-              },
+              validator: nonEmptyValidator,
+              onChanged: (_) => _clearSaveError,
               autofocus: true,
               focusNode: _nameFocusNode,
               maxLength: 24,
