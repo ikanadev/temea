@@ -18,7 +18,7 @@ class NewActivityDialog extends ConsumerStatefulWidget {
 class NewActivityDialogState extends ConsumerState<NewActivityDialog> {
   final _formKey = GlobalKey<FormState>();
   final _nameFocusNode = FocusNode();
-  String name = '';
+  final TextEditingController _nameContr = TextEditingController();
   String iconName = defaultIconName;
   Category? cat;
   String? _saveError;
@@ -36,7 +36,7 @@ class NewActivityDialogState extends ConsumerState<NewActivityDialog> {
       return;
     }
     final res = ref.read(activityRepoProv).saveActivity(
-          name: name,
+          name: _nameContr.text,
           iconName: iconName,
           category: cat,
         );
@@ -51,78 +51,77 @@ class NewActivityDialogState extends ConsumerState<NewActivityDialog> {
     final cats = ref.watch(categoriesProv);
     return AlertDialog(
       title: const Text('New Activity'),
-      content: Form(
-        key: _formKey,
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            if (_saveError != null)
-              Text(
-                _saveError!,
-                style: context.textTheme.bodySmall
-                    ?.copyWith(color: context.colorScheme.error),
-              ),
-            TextFormField(
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          if (_saveError != null)
+            Text(
+              _saveError!,
+              style: context.textTheme.bodySmall
+                  ?.copyWith(color: context.colorScheme.error),
+            ),
+          Form(
+            key: _formKey,
+            child: TextFormField(
               decoration: const InputDecoration(labelText: 'Name'),
+              controller: _nameContr,
               validator: nonEmptyValidator,
               onChanged: (_) => _clearSaveError,
               autofocus: true,
               focusNode: _nameFocusNode,
               maxLength: 24,
             ),
-            const SizedBox(height: 8),
-            Row(
-              children: [
-                Expanded(
-                    child: Text(
-                  'Icon',
-                  style: context.textTheme.labelLarge,
-                )),
-                IconButton.filledTonal(
-                  onPressed: () {
-                    _nameFocusNode.unfocus();
-                    showDialog(
-                      context: context,
-                      builder: (_) => IconPicker(
-                        iconName: iconName,
-                        setIconName: _setIconName,
-                      ),
-                    );
-                  },
-                  icon: Icon(
-                    getIconData(iconName),
-                    color: cat == null
-                        ? null
-                        : getCatColor(color: cat!.color, context: context),
-                  ),
-                  iconSize: 30,
+          ),
+          const SizedBox(height: 8),
+          Row(
+            children: [
+              Expanded(
+                child: Text('Icon', style: context.textTheme.labelLarge),
+              ),
+              IconButton.filledTonal(
+                onPressed: () {
+                  _nameFocusNode.unfocus();
+                  showDialog(
+                    context: context,
+                    builder: (_) => IconPicker(
+                      iconName: iconName,
+                      setIconName: _setIconName,
+                    ),
+                  );
+                },
+                icon: Icon(
+                  getIconData(iconName),
+                  color: cat == null
+                      ? null
+                      : getCatColor(color: cat!.color, context: context),
                 ),
-              ],
-            ),
-            DropdownButtonFormField<Category>(
-              decoration: const InputDecoration(labelText: 'Category'),
-              items: cats.map((c) {
-                return DropdownMenuItem<Category>(
-                  value: c,
-                  child: Row(
-                    children: [
-                      Icon(
-                        Icons.square_rounded,
-                        size: 20,
-                        color: getCatColor(color: c.color, context: context),
-                      ),
-                      const SizedBox(width: 4),
-                      Text(c.name, style: context.textTheme.labelLarge),
-                    ],
-                  ),
-                );
-              }).toList(),
-              value: cat,
-              hint: const Text('Pick a category'),
-              onChanged: (value) => setState(() => cat = value),
-            ),
-          ],
-        ),
+                iconSize: 30,
+              ),
+            ],
+          ),
+          DropdownButtonFormField<Category>(
+            decoration: const InputDecoration(labelText: 'Category'),
+            items: cats.map((cat) {
+              return DropdownMenuItem<Category>(
+                value: cat,
+                child: Row(
+                  children: [
+                    Icon(
+                      Icons.square_rounded,
+                      size: 20,
+                      color: getCatColor(color: cat.color, context: context),
+                    ),
+                    const SizedBox(width: 4),
+                    Text(cat.name, style: context.textTheme.labelLarge),
+                  ],
+                ),
+              );
+            }).toList(),
+            value: cat,
+            hint: const Text('Pick a category'),
+            onChanged: (value) => setState(() => cat = value),
+          ),
+        ],
       ),
       actions: [
         CancelButton(label: 'Cancel', onClick: _closeDialog),
